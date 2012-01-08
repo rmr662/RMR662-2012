@@ -9,6 +9,7 @@ package com.rmr662.frc2012;
 
 
 import com.rmr662.frc2012.generic.Component;
+import com.rmr662.frc2012.generic.Controller;
 import edu.wpi.first.wpilibj.SimpleRobot;
 
 /**
@@ -21,11 +22,13 @@ import edu.wpi.first.wpilibj.SimpleRobot;
 public class RMRRobot extends SimpleRobot {
     
     private Component[] components;
+    private Controller activeController;
     
     /**
      * This function is called once each time the robot enters autonomous mode.
      */
     public void autonomous() {
+        // TODO: initialize activeController and start a thread for it.
         updateComponents();
     }
 
@@ -33,6 +36,7 @@ public class RMRRobot extends SimpleRobot {
      * This function is called once each time the robot enters operator control.
      */
     public void operatorControl() {
+        // TODO: initialize activeController and start a thread for it
         updateComponents();
     }
     

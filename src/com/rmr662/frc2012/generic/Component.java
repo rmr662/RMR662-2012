@@ -46,4 +46,6 @@ public abstract class Component {
      */
     public abstract void disable();
     
+    public abstract String getRMRName();
+    
 }
