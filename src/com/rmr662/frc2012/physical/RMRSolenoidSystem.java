@@ -13,17 +13,39 @@ import edu.wpi.first.wpilibj.Solenoid;
  */
 public class RMRSolenoidSystem {
     
+    /**
+     * The non-inverted Solenoid
+     */
     private Solenoid correspondent;
+    /**
+     * The inverted Solenoid
+     */
     private Solenoid inverted;
     
+    /**
+     * Creates a new RMRSolenoidSystem with two pre-initialized solenoids.
+     * @param correspondent the non-inverted solenoid
+     * @param inverted the inverted solenoid
+     */
     public RMRSolenoidSystem(Solenoid correspondent, Solenoid inverted) {
         this.correspondent = correspondent;
         this.inverted = inverted;
     }
     
+    /**
+     * Sets the value of the solenoid system.
+     * @param on the new value of the solenoid system
+     */
     public void set(boolean on) {
         correspondent.set(on);
         inverted.set(!on);
+    }
+    
+    /**
+     * Toggles the value of the solenoid system
+     */
+    public void toggle() {
+        set(inverted.get());
     }
     
 }
