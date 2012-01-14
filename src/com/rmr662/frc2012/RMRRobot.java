@@ -12,6 +12,7 @@ import com.rmr662.frc2012.controller.TestController;
 import com.rmr662.frc2012.generic.Component;
 import com.rmr662.frc2012.generic.Controller;
 import edu.wpi.first.wpilibj.SimpleRobot;
+import edu.wpi.first.wpilibj.Timer;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -21,6 +22,8 @@ import edu.wpi.first.wpilibj.SimpleRobot;
  * directory.
  */
 public class RMRRobot extends SimpleRobot {
+    
+    private static final double PERIOD = 0.05;
     
     private Component[] components;
     private Controller activeController;
@@ -41,7 +44,10 @@ public class RMRRobot extends SimpleRobot {
         activeController = TestController.getInstance();
         controllerThread = new Thread(activeController);
         controllerThread.start();
-        updateComponents();
+        while (true) {
+            updateComponents();
+            Timer.delay(PERIOD);
+        }
     }
     
     /**
