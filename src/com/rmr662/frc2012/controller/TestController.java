@@ -12,12 +12,21 @@ import com.rmr662.frc2012.generic.Controller;
  */
 public class TestController implements Controller {
     
+    private static TestController singletonInstance;
+    
     public void run() {
         
     }
     
     public String getRMRName() {
         return "Test Controller";
+    }
+    
+    public static TestController getInstance() {
+        if (singletonInstance == null) {
+            singletonInstance = new TestController();
+        }
+        return singletonInstance;
     }
     
 }
