@@ -8,6 +8,7 @@
 package com.rmr662.frc2012;
 
 
+import com.rmr662.frc2012.component.Drive;
 import com.rmr662.frc2012.controller.TestController;
 import com.rmr662.frc2012.generic.Component;
 import com.rmr662.frc2012.generic.Controller;
@@ -34,7 +35,7 @@ public class RMRRobot extends SimpleRobot {
      */
     public void autonomous() {
         // TODO: initialize activeController and start a thread for it.
-        updateComponents();
+        // updateComponents();
     }
 
     /**
@@ -44,7 +45,7 @@ public class RMRRobot extends SimpleRobot {
         activeController = TestController.getInstance();
         controllerThread = new Thread(activeController);
         controllerThread.start();
-        while (true) {
+        while (isEnabled()) {
             updateComponents();
             Timer.delay(PERIOD);
         }
@@ -54,7 +55,8 @@ public class RMRRobot extends SimpleRobot {
      * This function is called exactly once when the robot is powered on.
      */
     protected void robotInit() {
-        // TODO: Initialize all components by adding them to components array
+       components = new Component[1];
+       components[0] = new Drive();
     }
     
     /**
