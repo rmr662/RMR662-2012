@@ -8,10 +8,12 @@
 package com.rmr662.frc2012;
 
 
-import com.rmr662.frc2012.controllers.TestController;
+import com.rmr662.frc2012.component.Drive;
+import com.rmr662.frc2012.controller.TestController;
 import com.rmr662.frc2012.generic.Component;
 import com.rmr662.frc2012.generic.Controller;
 import edu.wpi.first.wpilibj.SimpleRobot;
+import edu.wpi.first.wpilibj.Timer;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -22,6 +24,8 @@ import edu.wpi.first.wpilibj.SimpleRobot;
  */
 public class RMRRobot extends SimpleRobot {
     
+    private static final double PERIOD = 0.05;
+    
     private Component[] components;
     private Controller activeController;
     private Thread controllerThread;
@@ -31,24 +35,28 @@ public class RMRRobot extends SimpleRobot {
      */
     public void autonomous() {
         // TODO: initialize activeController and start a thread for it.
-        updateComponents();
+        // updateComponents();
     }
 
     /**
      * This function is called once each time the robot enters operator control.
      */
     public void operatorControl() {
-        activeController = new TestController();
-        controllerThread = new Thread(activeController, activeController.getRMRName());
+        activeController = TestController.getInstance();
+        controllerThread = new Thread(activeController);
         controllerThread.start();
-        updateComponents();
+        while (isEnabled()) {
+            updateComponents();
+            Timer.delay(PERIOD);
+        }
     }
     
     /**
      * This function is called exactly once when the robot is powered on.
      */
     protected void robotInit() {
-        // TODO: Initialize all components by adding them to components array
+       components = new Component[1];
+       components[0] = new Drive();
     }
     
     /**
