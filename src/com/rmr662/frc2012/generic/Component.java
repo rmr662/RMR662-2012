@@ -21,7 +21,7 @@ public abstract class Component {
      */
     public void setEnabled(boolean enabled) {
         if (!enabled) {
-            disable();
+            reset();
         }
         this.enabled = enabled;
     }
@@ -44,7 +44,7 @@ public abstract class Component {
      * Immediately disables all parts of the component that may be moving when
      * the component is disabled.
      */
-    public abstract void disable();
+    public abstract void reset();
     
     public abstract String getRMRName();
     

@@ -38,7 +38,7 @@ public class Drive extends Component {
         robotDrive.tankDrive(targetValues[LEFT], targetValues[RIGHT]);
     }
     
-    public void disable() {
+    public void reset() {
         for (int i = 0; i < targetValues.length; i++) {
             targetValues[i] = 0d;
         }
