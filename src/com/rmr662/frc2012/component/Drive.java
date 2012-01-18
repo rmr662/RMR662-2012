@@ -15,33 +15,43 @@ import edu.wpi.first.wpilibj.RobotDrive;
  */
 public class Drive extends Component {
     
-    private static Drive instance;
+    private volatile static Drive instance;
     
     private static final int LEFT = 0;
     private static final int RIGHT = 1;
     
     private static final int[] CHANNELS = {1, 2};
-    private static final int[] JOYSTICKS = {1, 2};
     
     private RMRJaguar[] motors = new RMRJaguar[CHANNELS.length];
     private RobotDrive robotDrive;
-    private Joystick[] joysticks = new Joystick[CHANNELS.length];
+    private double[] targetValues = {0d, 0d};
     
-    public Drive() {
+    private Drive() {
         for (int i = 0; i < CHANNELS.length; i++) {
             motors[i] = new RMRJaguar(CHANNELS[i]);
-            joysticks[i] = new Joystick(JOYSTICKS[i]);
         }
         motors[RIGHT].setInverted(true);
         robotDrive = new RobotDrive(motors[LEFT], motors[RIGHT]);
     }
     
     public void update() {
-        robotDrive.tankDrive(joysticks[LEFT], joysticks[RIGHT]);
+        robotDrive.tankDrive(targetValues[LEFT], targetValues[RIGHT]);
     }
     
     public void disable() {
-        
+        for (int i = 0; i < targetValues.length; i++) {
+            targetValues[i] = 0d;
+        }
+    }
+    
+    public synchronized void setTargetValue(int index, double value) {
+        targetValues[index] = value;
+    }
+    
+    public synchronized void setTargetValues(Joystick[] joysticks) {
+        for (int i = 0; i < joysticks.length; i++) {
+            targetValues[i] = joysticks[i].getY();
+        }
     }
     
     public static Drive getInstance() {
