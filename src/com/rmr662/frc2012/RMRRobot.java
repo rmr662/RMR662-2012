@@ -24,7 +24,7 @@ import edu.wpi.first.wpilibj.Timer;
  */
 public class RMRRobot extends SimpleRobot {
     
-    private static final double PERIOD = 0.05;
+    public static final double PERIOD = 0.05;
     
     private Component[] components;
     private Controller activeController;
@@ -56,7 +56,7 @@ public class RMRRobot extends SimpleRobot {
      */
     protected void robotInit() {
        components = new Component[1];
-       components[0] = new Drive();
+       components[0] = Drive.getInstance();
     }
     
     /**
