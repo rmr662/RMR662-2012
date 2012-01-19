@@ -53,6 +53,7 @@ public class Drive extends Component {
             controllers[i].setInputRange(SPEED_MIN, SPEED_MAX);
         }
         motors[RIGHT].setInverted(true);
+        encoders[LEFT].setReverseDirection(true);
         robotDrive = new RMRRobotDrive(controllers[LEFT], controllers[RIGHT]);
     }
     
