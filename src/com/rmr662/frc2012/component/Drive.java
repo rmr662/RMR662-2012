@@ -28,7 +28,7 @@ public class Drive extends Component {
     private static final double KI = 0.0;
     private static final double KD = 0.0;
     
-    private static final double SPEED_MIN = 0.0;
+    private static final double SPEED_MIN = -100d;
     private static final double SPEED_MAX = 100d;
     
     private static final int[] MOTOR_CHANNELS = {1, 2};
@@ -52,7 +52,6 @@ public class Drive extends Component {
             controllers[i].enable();
             controllers[i].setInputRange(SPEED_MIN, SPEED_MAX);
         }
-        motors[RIGHT].setInverted(true);
         encoders[LEFT].setReverseDirection(true);
         robotDrive = new RMRRobotDrive(controllers[LEFT], controllers[RIGHT]);
     }
