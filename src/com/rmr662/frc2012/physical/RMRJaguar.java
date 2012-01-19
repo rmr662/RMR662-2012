@@ -7,7 +7,8 @@ package com.rmr662.frc2012.physical;
 import edu.wpi.first.wpilibj.Jaguar;
 
 /**
- *
+ * This class adds the functionality of inverting a motor to the default 
+ * WPIlib Jaguar class.
  * @author mcoffin
  */
 public class RMRJaguar extends Jaguar {
@@ -18,6 +19,10 @@ public class RMRJaguar extends Jaguar {
         super(channel);
     }
     
+    /**
+     * Sets the inverted nature of the motor.
+     * @param inverted whether or not the motor should be inverted.
+     */
     public void setInverted(boolean inverted) {
         this.inverted = inverted;
     }

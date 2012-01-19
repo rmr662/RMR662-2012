@@ -12,7 +12,8 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PIDController;
 
 /**
- *
+ * This class represents the drive wheels of the robot and knows how to control
+ * them so that they will adapt to a given target speed.
  * @author mcoffin
  */
 public class Drive extends Component {
