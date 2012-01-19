@@ -5,7 +5,6 @@
 package com.rmr662.frc2012.library;
 
 import edu.wpi.first.wpilibj.PIDController;
-import edu.wpi.first.wpilibj.RobotDrive;
 
 /**
  *
