@@ -32,8 +32,8 @@ public class Drive extends Component {
     private static final double SPEED_MAX = 100d;
     
     private static final int[] MOTOR_CHANNELS = {1, 2};
-    private static final int[] ENCODER_CHANNELS_A = {1, 2};
-    private static final int[] ENCODER_CHANNELS_B = {1, 2};
+    private static final int[] ENCODER_CHANNELS_A = {3, 5};
+    private static final int[] ENCODER_CHANNELS_B = {4, 6};
     
     private RMRJaguar[] motors = new RMRJaguar[MOTOR_CHANNELS.length];
     private Encoder[] encoders = new Encoder[ENCODER_CHANNELS_A.length];
