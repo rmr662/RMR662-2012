@@ -33,7 +33,7 @@ public class CameraComponent extends Component{
         servoTilt.set(targetTiltState);
     }
 
-    public void disable() {
+    public void reset() {
     }
 
     public String getRMRName() {
