@@ -30,7 +30,8 @@ public class TestController implements Controller {
     
     public void run() {
         while (true) {
-                Drive.getInstance().setTargetValues(joysticks);
+            Drive.getInstance().setTargetValues(joysticks);
+            //Drive.getInstance().setTargetValues(0.75, 0.75);
             Timer.delay(RMRRobot.PERIOD);
         }
     }
