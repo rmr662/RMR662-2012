@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj.Timer;
  */
 public class TestController implements Controller {
     
-    private static TestController singletonInstance;
+    private static TestController instance;
     
     private static final int[] JOYSTICKS = {1, 2};
     
@@ -40,10 +40,10 @@ public class TestController implements Controller {
     }
     
     public static TestController getInstance() {
-        if (singletonInstance == null) {
-            singletonInstance = new TestController();
+        if (instance == null) {
+            instance = new TestController();
         }
-        return singletonInstance;
+        return instance;
     }
     
 }
