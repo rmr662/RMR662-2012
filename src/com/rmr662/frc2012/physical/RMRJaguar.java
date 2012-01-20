@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.Jaguar;
 public class RMRJaguar extends Jaguar {
     
     private boolean inverted = false;
+    private double lastOutput = 0;
     
     public RMRJaguar(int channel) {
         super(channel);
@@ -25,6 +26,11 @@ public class RMRJaguar extends Jaguar {
      */
     public void setInverted(boolean inverted) {
         this.inverted = inverted;
+    }
+    
+    public void pidWrite(double output) {
+        lastOutput += output;
+        super.pidWrite(lastOutput);
     }
     
     public void set(double speed) {
