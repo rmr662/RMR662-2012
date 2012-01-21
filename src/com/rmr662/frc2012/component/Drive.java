@@ -55,13 +55,13 @@ public class Drive extends Component {
             controllers[i].enable();
             controllers[i].setInputRange(SPEED_MIN, SPEED_MAX);
         }
-        encoders[LEFT].setReverseDirection(true);
-        robotDrive = new RMRRobotDrive(controllers[LEFT], controllers[RIGHT]);
+        encoders[LEFT].setReverseDirection(true); 
+        robotDrive = new RMRRobotDrive(controllers[LEFT], controllers[RIGHT], motors[LEFT], motors[RIGHT]);
     }
     
     public void update() {
         robotDrive.tankDrive(targetValues[LEFT], targetValues[RIGHT]);
-        System.out.println(encoders[LEFT].getRate() + " " + encoders[RIGHT].getRate());
+        System.out.println("PID: " + controllers[LEFT].getP() + ", " + controllers[LEFT].getI() + ", " + controllers[LEFT].getD());
     }
     
     public void reset() {
@@ -79,6 +79,22 @@ public class Drive extends Component {
         for (int i = 0; i < joysticks.length; i++) {
             targetValues[i] = -(joysticks[i].getY());
         }
+    }
+    
+    public void setRelativePIDValues(double p, double i, double d) {
+        for(int j = 0; j < controllers.length; ++j) {
+            controllers[j].setPID(controllers[j].getP() + p, controllers[j].getI() + i, controllers[j].getD() + d);
+        }
+    }
+    
+    public void enablePID()
+    {
+        robotDrive.setPID(true);
+    }
+    
+    public void disablePID()
+    {
+        robotDrive.setPID(false);
     }
     
     public static Drive getInstance() {

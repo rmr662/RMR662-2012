@@ -5,6 +5,7 @@
 package com.rmr662.frc2012.library;
 
 import edu.wpi.first.wpilibj.PIDController;
+import com.rmr662.frc2012.physical.RMRJaguar;
 
 /**
  *
@@ -15,9 +16,16 @@ public class RMRRobotDrive {
     private PIDController leftPID;
     private PIDController rightPID;
     
-    public RMRRobotDrive(PIDController leftPID, PIDController rightPID) {
+    private RMRJaguar leftMotor;
+    private RMRJaguar rightMotor;
+    
+    private boolean PIDEnabled = true;
+    
+    public RMRRobotDrive(PIDController leftPID, PIDController rightPID, RMRJaguar leftMotor, RMRJaguar rightMotor) {
         this.leftPID = leftPID;
         this.rightPID = rightPID;
+        this.leftMotor = leftMotor;
+        this.rightMotor = rightMotor;
     }
     
     public void tankDrive(double leftValue, double rightValue) {
@@ -33,12 +41,31 @@ public class RMRRobotDrive {
         } else {
             leftValue = -(leftValue * leftValue);
         }
-        setPIDSetpoints(leftValue, rightValue);
+        if(PIDEnabled) {
+            setPIDSetpoints(leftValue, rightValue);
+        }
+        else {
+            leftMotor.set(leftValue);
+            rightMotor.set(rightValue);
+        }
+
     }
     
     private void setPIDSetpoints(double leftValue, double rightValue) {
         leftPID.setSetpoint(leftValue);
         rightPID.setSetpoint(rightValue);
+    }
+    
+    public void setPID(boolean enabled) {
+        PIDEnabled = enabled;
+        if(enabled) {
+            leftPID.enable();
+            rightPID.enable();
+        }
+        else {
+            leftPID.disable();
+            rightPID.disable();
+        }
     }
     
     public static double limit(double num) {
