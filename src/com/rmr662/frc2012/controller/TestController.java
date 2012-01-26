@@ -22,7 +22,7 @@ public class TestController implements Controller {
     private static final int LEFT = 0;
     private static final int RIGHT = 1;
     
-    private boolean[] isPressed = new boolean[6];;
+    private boolean[] isPressed = new boolean[6];
     private Joystick[] joysticks = new Joystick[2];
     
     private double relativePTuning = 0.01;
@@ -49,29 +49,36 @@ public class TestController implements Controller {
                     //Increment or decrement the value for the PID
                     //Probably a bad way to go about this, but whatever
                     switch(i + 1) {
+                        // TODO: turn numbers into constants numbnutss
                         case 1:
                         {
                             Drive.getInstance().setRelativePIDValues(relativePTuning,0,0);
+                            break;
                         }
                         case 2:
                         {
                             Drive.getInstance().setRelativePIDValues(-relativePTuning,0,0);
+                            break;
                         }
                         case 3:
                         {
                             Drive.getInstance().setRelativePIDValues(0,-relativeITuning,0);
+                            break;
                         }
                         case 4:
                         {
                             Drive.getInstance().setRelativePIDValues(0,0,-relativeDTuning);
+                            break;
                         }
                         case 5:
                         {
                             Drive.getInstance().setRelativePIDValues(0,relativeITuning,0);
+                            break;
                         }
                         case 6:
                         {
                             Drive.getInstance().setRelativePIDValues(0,0,relativeDTuning);
+                            break;
                         }
                     }
                 }
