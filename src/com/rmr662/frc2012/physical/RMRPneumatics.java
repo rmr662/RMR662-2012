@@ -14,16 +14,28 @@ public class RMRPneumatics {
     
     int channel;
     Solenoid sole;
-             
+            
+    /**
+     * assigns the channel
+     * @param channel 
+     */
     public RMRPneumatics(int channel){
         this.channel = channel;
         Solenoid sole = new Solenoid(channel);
     }
     
+    /**
+     * returns the status of the solenoid
+     * @return 
+     */
     public boolean getStatus() {
         return sole.get();
     }
     
+    /**
+     * sets the status of the solenoid
+     * @param status 
+     */
     public void setStatus(boolean status){
         sole.set(status);
     }

@@ -41,6 +41,11 @@ public class Drive extends Component {
     private RMRRobotDrive robotDrive;
     private double[] targetValues = {0d, 0d};
     
+    /**
+     * This is the constructor
+     * Initializes each motor
+     */
+    
     private Drive() {
         for (int i = 0; i < MOTOR_CHANNELS.length; i++) {
             motors[i] = new RMRJaguar(MOTOR_CHANNELS[i]);
@@ -56,9 +61,18 @@ public class Drive extends Component {
         robotDrive = new RMRRobotDrive(controllers[LEFT], controllers[RIGHT]);
     }
     
+    
+    /**
+     * updates new target values for the robot to go to
+     */
+    
     public void update() {
         robotDrive.tankDrive(targetValues[LEFT], targetValues[RIGHT]);
     }
+    
+    /**
+     * Sets all target values to zero
+     */
     
     public void reset() {
         for (int i = 0; i < targetValues.length; i++) {
@@ -66,9 +80,17 @@ public class Drive extends Component {
         }
     }
     
+    /**
+     * sets target values for a given motor
+     */
+    
     public synchronized void setTargetValue(int index, double value) {
         targetValues[index] = value;
     }
+    
+    /**
+     * sets target values for a motor based on the joystick's position 
+     */
     
     public synchronized void setTargetValues(Joystick[] joysticks) {
         for (int i = 0; i < joysticks.length; i++) {
@@ -76,12 +98,21 @@ public class Drive extends Component {
         }
     }
     
+    /**
+     * makes new instance of Drive by calling on constructor
+     * makes sure multiple instances of drive is not assigned
+     */
+    
     public static Drive getInstance() {
         if (instance == null) {
             instance = new Drive();
         }
         return instance;
     }
+        
+    /**
+     * Returns a value of drive for the string getRMRName
+     */
     
     public String getRMRName() {
         return "Drive";

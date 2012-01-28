@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.Jaguar;
 public class RMRJaguar extends Jaguar {
     
     private boolean inverted = false;
+
     
     public RMRJaguar(int channel) {
         super(channel);

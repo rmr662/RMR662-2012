@@ -20,6 +20,15 @@ public class RMRCompressor extends Component{
     Compressor compress;
     boolean compressing;
     boolean compressed;
+    
+    /**
+     * assigns target values for booleans compressing and compressed
+     * assigns slots and channels
+     * @param pressureSwitchSlot
+     * @param pressureSwitchChannel
+     * @param compresssorRelaySlot
+     * @param compressorRelayChannel 
+     */
 
     public RMRCompressor(int pressureSwitchSlot, int pressureSwitchChannel, int compresssorRelaySlot, int compressorRelayChannel){
          this.pressureSwitchSlot = pressureSwitchSlot;
@@ -41,14 +50,25 @@ public class RMRCompressor extends Component{
     public void reset() {
     }
 
+    /**
+     * return value compressor for getRMRName
+     * @return 
+     */
     public String getRMRName() {
         return "Compressor";
     }
     
+    /**
+     * gets current status for whether or not the compressor is done compressing
+     * @return 
+     */
     public boolean getStatus(){
         return compressed;
     }
     
+    /**
+     * starts the compressor, sets boolean compressing as true
+     */
     public void startComp(){
         compress.start();
         compressing = true;

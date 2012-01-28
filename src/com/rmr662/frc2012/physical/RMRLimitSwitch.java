@@ -17,14 +17,29 @@ public class RMRLimitSwitch {
     DigitalInput digitalIn;
     boolean inverted;
 
+    /**
+     * Creates new digital input
+     * @param port
+     * @param inverted 
+     */
     public RMRLimitSwitch(int port, boolean inverted) {
         digitalIn = new DigitalInput(port);
         this.inverted = inverted;
     }
+    /**
+     * Creates new digital input
+     * sets inverted as false
+     * @param port 
+     */
     public RMRLimitSwitch(int port) {
         digitalIn = new DigitalInput(port);
         this.inverted = false;
     }
+    /**
+     * Returns status of the switch
+     * @param inverted
+     * @return 
+     */
 
     public boolean getSwitch(boolean inverted){
         if (inverted){
