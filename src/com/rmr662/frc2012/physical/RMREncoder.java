@@ -33,4 +33,8 @@ public class RMREncoder extends Encoder {
         return prev_rate;
     }
     
+    public double getLegacyRate() {
+        return super.getRate();
+    }
+    
 }
