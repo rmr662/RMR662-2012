@@ -9,7 +9,8 @@ import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DigitalInput;
 
 /**
- *
+ * Compressor as a constantly updated component that can be enabled and disabled by a switch on the robot
+ * 
  * @author RMR Programming
  */
 public class RMRCompressor extends Component {
