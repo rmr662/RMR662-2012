@@ -35,7 +35,11 @@ public class Drive extends Component {
     private RMREncoder[] encoders = new RMREncoder[ENCODER_CHANNELS_A.length];
     private PIDController[] controllers = new PIDController[MOTOR_CHANNELS.length];
     private double[] targetValues = {0d, 0d};
-
+    
+    /**
+     * Creates a new Drive component with motors and encoders on the default
+     * channels
+     */
     private Drive() {
         for (int i = 0; i < MOTOR_CHANNELS.length; i++) {
             motors[i] = new RMRJaguar(MOTOR_CHANNELS[i]);
@@ -61,18 +65,32 @@ public class Drive extends Component {
             targetValues[i] = 0d;
         }
     }
-
+    
+    /**
+     * Set the target values for the motors.
+     * @param leftValue desired left motor target value
+     * @param rightValue desired right motor target value
+     */
     public synchronized void setTargetValues(double leftValue, double rightValue) {
         targetValues[LEFT] = leftValue;
         targetValues[RIGHT] = rightValue;
     }
 
+    /**
+     * Set the target values for the motors.
+     * @param joysticks the joysticks to use to set the motor targets.
+     */
     public synchronized void setTargetValues(Joystick[] joysticks) {
         for (int i = 0; i < joysticks.length; i++) {
             targetValues[i] = -(joysticks[i].getY());
         }
     }
-
+    
+    /**
+     * Sets motor values based on a left and right target value.
+     * @param leftValue
+     * @param rightValue 
+     */
     public void tankDrive(double leftValue, double rightValue) {
         leftValue = limit(leftValue);
         rightValue = limit(rightValue);
@@ -105,12 +123,22 @@ public class Drive extends Component {
         return num;
     }
 
+    /**
+     * Adds deltas to the gains on the PID controllers
+     * @param p change in KP
+     * @param i change in KI
+     * @param d change in KD
+     */
     public void setRelativePIDValues(double p, double i, double d) {
         for (int j = 0; j < controllers.length; ++j) {
             controllers[j].setPID(controllers[j].getP() + p, controllers[j].getI() + i, controllers[j].getD() + d);
         }
     }
 
+    /**
+     * Enables or disables the PID
+     * @param enabled whether or not the PID should be enabled.
+     */
     public void setPID(boolean enabled) {
         pidEnabled = enabled;
         if (enabled) {
@@ -124,10 +152,16 @@ public class Drive extends Component {
         }
     }
 
+    /**
+     * Enables the PID
+     */
     public void enablePID() {
         setPID(true);
     }
-
+    
+    /**
+     * Disables the PID
+     */
     public void disablePID() {
         setPID(false);
     }

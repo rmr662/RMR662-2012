@@ -29,7 +29,7 @@ public class RMRLimitSwitch {
     /**
      * Creates new digital input
      * sets inverted as false
-     * @param port 
+     * @param port the channel number for the digital input
      */
     public RMRLimitSwitch(int port) {
         digitalIn = new DigitalInput(port);

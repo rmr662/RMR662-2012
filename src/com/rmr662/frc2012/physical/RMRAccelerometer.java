@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.ADXL345_I2C;
 /**
  * This class should read data from the accelerometer.
  *
- * @author RMR662 0x1D
+ * @author RMR-Programming
  */
 public class RMRAccelerometer {
     
@@ -28,7 +28,8 @@ public class RMRAccelerometer {
     }
 
     /**
-     * assigns the range for the measurements on the accelerometer
+     * Creates a new RMRAccelerometer
+     * @param slot the slot to which the I2C cables are connected.
      */
     public RMRAccelerometer(int slot) {
         accel = new ADXL345_I2C(slot, ADXL345_I2C.DataFormat_Range.k2G);

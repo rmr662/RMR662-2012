@@ -25,6 +25,9 @@ import edu.wpi.first.wpilibj.Timer;
  */
 public class RMRRobot extends SimpleRobot {
     
+    /**
+     * The update cycle for pushing updates to components (in millis)
+     */
     public static final double PERIOD = 0.05;
     
     private Component[] components;
