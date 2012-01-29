@@ -5,7 +5,6 @@
 package com.rmr662.frc2012.component;
 
 import com.rmr662.frc2012.generic.Component;
-import com.rmr662.frc2012.physical.RMREncoder;
 import com.rmr662.frc2012.physical.RMRJaguar;
 import edu.wpi.first.wpilibj.DigitalInput;
 
@@ -66,6 +65,6 @@ public class ShooterArm extends Component {
     }
 
     public synchronized void setShooting(boolean shoot) {
-        this.shooting = shoot;
+        shooting = shoot;
     }
 }
