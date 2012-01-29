@@ -9,6 +9,7 @@ package com.rmr662.frc2012;
 
 
 import com.rmr662.frc2012.component.Drive;
+import com.rmr662.frc2012.component.RMRCompressor;
 import com.rmr662.frc2012.controller.TestController;
 import com.rmr662.frc2012.generic.Component;
 import com.rmr662.frc2012.generic.Controller;
@@ -55,8 +56,9 @@ public class RMRRobot extends SimpleRobot {
      * This function is called exactly once when the robot is powered on.
      */
     protected void robotInit() {
-       components = new Component[1];
+       components = new Component[2];
        components[0] = Drive.getInstance();
+       components[1] = RMRCompressor.getInstance();
     }
     
     /**

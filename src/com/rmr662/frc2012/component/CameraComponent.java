@@ -15,13 +15,16 @@ public class CameraComponent extends Component{
     
     private static final int PAN = 10;
     private static final int TILT = 9;
+    
+    private static final double DEFAULT_PAN = 0d;
+    private static final double DEFAULT_TILT = 0d;
 
-    Servo servoPan;
-    double currentPanState;
-    double targetPanState;
-    Servo servoTilt;
-    double currentTiltState;
-    double targetTiltState;
+    private Servo servoPan;
+    private double currentPanState;
+    private double targetPanState;
+    private Servo servoTilt;
+    private double currentTiltState;
+    private double targetTiltState;
     
     /**
      * creates instances of the servos for the camera
@@ -35,13 +38,19 @@ public class CameraComponent extends Component{
     /**
      * updates the target state of the pan and tilt
      */
-    
     public void update() {
-        servoPan.set(targetPanState);  
-        servoTilt.set(targetTiltState);
+        double localPanTarget, localTiltTarget;
+        synchronized(this) {
+            localPanTarget = targetPanState;
+            localTiltTarget = targetTiltState;
+        }
+        servoPan.set(localPanTarget);  
+        servoTilt.set(localTiltTarget);
     }
     
     public void reset() {
+        targetPanState = DEFAULT_PAN;
+        targetTiltState = DEFAULT_TILT;
     }
     
     /**
@@ -68,6 +77,7 @@ public class CameraComponent extends Component{
     public void setPanTargetState(double goalPanState){
         targetPanState = goalPanState;
     }
+    
     /**
      * gets the current state of tilt
      */
@@ -75,6 +85,7 @@ public class CameraComponent extends Component{
         currentTiltState = servoTilt.get();        
         return currentTiltState;
     }
+    
     /**
      * sets the target Tilt State
      * @param goalTiltState 

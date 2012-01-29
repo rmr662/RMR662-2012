@@ -12,14 +12,26 @@ import edu.wpi.first.wpilibj.ADXL345_I2C;
  * @author RMR662 0x1D
  */
 public class RMRAccelerometer {
+    
+    /**
+     * Default slot for IC2 chips
+     */
+    private static final int SLOT = 1;
 
     private ADXL345_I2C accel;
+    
+    /**
+     * Creates an RMRAccelerometer with the default slot.
+     */
+    public RMRAccelerometer() {
+        this(SLOT);
+    }
 
     /**
      * assigns the range for the measurements on the accelerometer
      */
-    public RMRAccelerometer(int port) {
-        accel = new ADXL345_I2C(port, ADXL345_I2C.DataFormat_Range.k2G);
+    public RMRAccelerometer(int slot) {
+        accel = new ADXL345_I2C(slot, ADXL345_I2C.DataFormat_Range.k2G);
     }
 
     /**
