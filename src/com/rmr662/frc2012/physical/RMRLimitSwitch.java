@@ -19,20 +19,19 @@ public class RMRLimitSwitch {
 
     /**
      * Creates new digital input
-     * @param port
+     * @param channel
      * @param inverted 
      */
-    public RMRLimitSwitch(int port, boolean inverted) {
-        digitalIn = new DigitalInput(port);
+    public RMRLimitSwitch(int channel, boolean inverted) {
+        digitalIn = new DigitalInput(channel);
         this.inverted = inverted;
     }
     /**
-     * Creates new digital input
-     * sets inverted as false
-     * @param port the channel number for the digital input
+     * Creates new digital input that isn't inverted.
+     * @param channel the channel number for the digital input
      */
-    public RMRLimitSwitch(int port) {
-        digitalIn = new DigitalInput(port);
+    public RMRLimitSwitch(int channel) {
+        digitalIn = new DigitalInput(channel);
         this.inverted = false;
     }
     /**
