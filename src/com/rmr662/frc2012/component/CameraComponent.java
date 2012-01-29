@@ -70,7 +70,7 @@ public class CameraComponent extends Component{
      * Sets the pan target state
      * @param goalPanState the desired pan target state
      */
-    public void setPanTargetState(double goalPanState){
+    public synchronized void setPanTargetState(double goalPanState){
         targetPanState = goalPanState;
     }
     
@@ -87,7 +87,7 @@ public class CameraComponent extends Component{
      * Sets the tilt target state
      * @param goalTiltState the desired tilt target state
      */
-    public void setTiltTargetState(double goalTiltState){
+    public synchronized void setTiltTargetState(double goalTiltState){
         targetTiltState = goalTiltState;
     }
 }
