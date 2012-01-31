@@ -9,7 +9,8 @@ import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DigitalInput;
 
 /**
- * Compressor as a constantly updated component that can be enabled and disabled by a switch on the robot
+ * Compressor as a constantly updated component that can be enabled and disabled
+ * by a switch on the robot
  * 
  * @author RMR Programming
  */
@@ -26,6 +27,9 @@ public class RMRCompressor extends Component {
     
     private static RMRCompressor instance;
     
+    /**
+     * Creates a compressor with the switch and relay on the default channels.
+     */
     public RMRCompressor() {
         compressor = new Compressor(COMPRESSOR_CHANNEL[SWITCH], COMPRESSOR_CHANNEL[RELAY]);
         disableSwitch = new DigitalInput(COMPRESSOR_SWITCH_CHANNEL);
