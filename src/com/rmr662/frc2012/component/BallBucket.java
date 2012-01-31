@@ -16,32 +16,45 @@ public class BallBucket extends Component {
     
     private static BallBucket instance;
     
-    private static final int NORMAL_CHANNEL = 0;
-    private static final int INVERTED_CHANNEL = 1;
-    private static final boolean DEFAULT_STATE = false;
+    private static final int NORMAL_CHANNEL_ELBOW = 0;
+    private static final int INVERTED_CHANNEL_ELBOW = 1;
     
-    private RMRSolenoidSystem valve;
+    private static final int NORMAL_CHANNEL_WRIST = 0;
+    private static final int INVERTED_CHANNEL_WRIST = 1;
     
-    private boolean targetValueIsDown;
+    private static final boolean DEFAULT_STATE_ELBOW = false;
+    private static final boolean DEFAULT_STATE_WRIST = false;
+    
+    private RMRSolenoidSystem elbowSolenoid;
+    private RMRSolenoidSystem wristSolenoid;
+    
+    private boolean targetElbowValue;
+    private boolean targetWristValue;
     
     public BallBucket() {
-        valve = new RMRSolenoidSystem(new Solenoid(NORMAL_CHANNEL), new Solenoid(INVERTED_CHANNEL));
-        valve.set(DEFAULT_STATE);
+        elbowSolenoid = new RMRSolenoidSystem(new Solenoid(NORMAL_CHANNEL_ELBOW), new Solenoid(INVERTED_CHANNEL_ELBOW));
+        elbowSolenoid.set(DEFAULT_STATE_ELBOW);
+        
+        wristSolenoid = new RMRSolenoidSystem(new Solenoid(NORMAL_CHANNEL_WRIST), new Solenoid(INVERTED_CHANNEL_WRIST));
+        wristSolenoid.set(DEFAULT_STATE_WRIST);
     }
     
     public void update() {
-        boolean localTargetValueIsDown;
+        boolean localTargetElbowValue;
+        boolean localTargetWristValue;
         
         synchronized(this) {
-            localTargetValueIsDown = targetValueIsDown;
+            localTargetElbowValue = targetElbowValue;
+            localTargetWristValue = targetWristValue;
         }
-        valve.set(localTargetValueIsDown);
+        elbowSolenoid.set(localTargetElbowValue);
+        wristSolenoid.set(localTargetWristValue);
     }
     
     public void reset() {
-        valve.set(DEFAULT_STATE);
         synchronized(this) {
-            targetValueIsDown = DEFAULT_STATE;
+            targetElbowValue = DEFAULT_STATE_ELBOW;
+            targetWristValue = DEFAULT_STATE_WRIST;
         }
     }
     
@@ -57,7 +70,7 @@ public class BallBucket extends Component {
     }
     
     public synchronized void setTarget(boolean down){
-        targetValueIsDown = down;
+        targetElbowValue = down;
     }
     
 }
