@@ -7,11 +7,9 @@
 
 package com.rmr662.frc2012;
 
-
-import com.rmr662.frc2012.component.BallBucket;
+import com.rmr662.frc2012.component.CameraComponent;
 import com.rmr662.frc2012.component.Drive;
 import com.rmr662.frc2012.component.RMRCompressor;
-import com.rmr662.frc2012.component.ShooterArm;
 import com.rmr662.frc2012.controller.TestController;
 import com.rmr662.frc2012.generic.Component;
 import com.rmr662.frc2012.generic.Controller;
@@ -35,7 +33,7 @@ public class RMRRobot extends SimpleRobot {
     private Component[] components;
     private Controller activeController;
     private Thread controllerThread;
-    
+     
     /**
      * This function is called once each time the robot enters autonomous mode.
      */
@@ -61,11 +59,12 @@ public class RMRRobot extends SimpleRobot {
      * This function is called exactly once when the robot is powered on.
      */
     protected void robotInit() {
-       components = new Component[4];
+       components = new Component[3];
        components[0] = Drive.getInstance();
        components[1] = RMRCompressor.getInstance();
-       components[2] = BallBucket.getInstance();
-       components[3] = ShooterArm.getInstance();
+       //components[2] = BallBucket.getInstance();
+       //components[3] = ShooterArm.getInstance();
+       components[2] = CameraComponent.getInstance();
     }
     
     /**
