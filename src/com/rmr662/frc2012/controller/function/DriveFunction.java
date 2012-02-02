@@ -21,7 +21,8 @@ public class DriveFunction extends Function {
     }
     
     protected void update() {
-        Drive.getInstance().setTargetValues(joysticks);
+        Drive.getInstance().setTargetValues(-joysticks[Drive.LEFT].getY(),
+                -joysticks[Drive.RIGHT].getY());
     }
     
     protected void defaultState() {
