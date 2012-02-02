@@ -4,6 +4,7 @@
  */
 package com.rmr662.frc2012.controller.function;
 
+import com.rmr662.frc2012.component.BallBucket;
 import com.rmr662.frc2012.generic.Function;
 import com.rmr662.frc2012.physical.RMRSolenoidSystem;
 import edu.wpi.first.wpilibj.Joystick;
@@ -13,26 +14,21 @@ import edu.wpi.first.wpilibj.Joystick;
  * @author RMR Programming
  */
 public class PickupFunction extends Function {
-    
-    private static final int WRIST_SOLENOIDS = 1;
-    private static final int ELBOW_SOLENOIDS = 0;
-    
+
     private boolean isPressed[] = new boolean[2];
-    private RMRSolenoidSystem[] solenoids;
     private Joystick joystick;
-    
-    public PickupFunction(RMRSolenoidSystem[] solenoids, Joystick joystick) {
-        this.solenoids = solenoids;
+
+    public PickupFunction(Joystick joystick) {
         this.joystick = joystick;
-        for (int i=0; i<isPressed.length; ++i) {
+        for (int i = 0; i < isPressed.length; ++i) {
             isPressed[i] = false;
         }
     }
-    
+
     protected void update() {
-        for(int i=0; i<isPressed.length; ++i) {
-            if (joystick.getRawButton(i+1) && !isPressed[i]) {
-                switch(i+1){
+        for (int i = 0; i < isPressed.length; ++i) {
+            if (joystick.getRawButton(i + 1) && !isPressed[i]) {
+                switch (i + 1) {
                     case 1:
                         this.prepare();
                         break;
@@ -42,25 +38,20 @@ public class PickupFunction extends Function {
                     default:
                         break;
                 }
-                isPressed[i] = joystick.getRawButton(i+1);
+                isPressed[i] = joystick.getRawButton(i + 1);
             }
         }
     }
-    
-    protected void defaultState(){
-        for(int i=0; i<solenoids.length; ++i) {
-            solenoids[i].set(false);
-        }
-        for(int i=0; i<isPressed.length; ++i) {
-            isPressed[i] = false;
-        }
+
+    protected void defaultState() {
+        BallBucket.getInstance().reset();
     }
-    
+
     private void prepare() {
-        solenoids[ELBOW_SOLENOIDS].set(true);
+        BallBucket.getInstance().setElbowTarget(true);
     }
-    
+
     private void activate() {
-        solenoids[WRIST_SOLENOIDS].set(false);
+        BallBucket.getInstance().setWristTarget(true);
     }
 }
