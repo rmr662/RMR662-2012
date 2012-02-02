@@ -14,9 +14,6 @@ import edu.wpi.first.wpilibj.Joystick;
  */
 public class DrivePIDTuningFunction extends Function {
     
-    private static final int LEFT = 0;
-    private static final int RIGHT = 1;
-    
     private Joystick[] joysticks;
     private boolean isPressed[] = new boolean[6];
     
@@ -32,14 +29,14 @@ public class DrivePIDTuningFunction extends Function {
     }
     
     protected void update() {
+        // TODO: differentiate between right and left
         //Check for changes in joysick buttons and update PID tunings
         for(int i = 0; i < isPressed.length; ++i) {
             //if currently pressed, but wasn't last loop
-            if(joysticks[LEFT].getRawButton(i + 1) && !isPressed[i]) {
+            if(joysticks[Drive.LEFT].getRawButton(i + 1) && !isPressed[i]) {
                 //Increment or decrement the value for the PID
                 //Probably a bad way to go about this, but whatever
                 switch(i + 1) {
-                    // TODO: turn numbers into constants numbnutss
                     case 1:
                     {
                         Drive.getInstance().setRelativePIDValues(relativePTuning,0,0);
@@ -72,8 +69,9 @@ public class DrivePIDTuningFunction extends Function {
                     }
                 }
             }
-            isPressed[i] = joysticks[LEFT].getRawButton(i + 1);
+            isPressed[i] = joysticks[Drive.LEFT].getRawButton(i + 1);
         }
+//        System.out.println("PID: " + Drive.getInstance().getP() + ", " + Drive.getInstance().getI() + ", " + Drive.getInstance().getD());
     }
     
     protected void defaultState() {
