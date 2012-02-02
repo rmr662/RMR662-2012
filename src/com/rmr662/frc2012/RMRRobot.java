@@ -33,6 +33,8 @@ public class RMRRobot extends SimpleRobot {
     private Component[] components;
     private Controller activeController;
     private Thread controllerThread;
+    
+    public static RMRRobot robot;
      
     /**
      * This function is called once each time the robot enters autonomous mode.
@@ -59,12 +61,24 @@ public class RMRRobot extends SimpleRobot {
      * This function is called exactly once when the robot is powered on.
      */
     protected void robotInit() {
+       robot = this;
        components = new Component[2];
        components[0] = Drive.getInstance();
        components[1] = RMRCompressor.getInstance();
        //components[2] = BallBucket.getInstance();
        //components[3] = ShooterArm.getInstance();
        //components[2] = CameraComponent.getInstance();
+    }
+    
+    protected void disabled() {
+        try {
+            controllerThread.join();
+        } catch(NullPointerException e) {
+            System.out.println("No controller thread was running.");
+        } catch(InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Disabled.");
     }
     
     /**

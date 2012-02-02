@@ -4,7 +4,9 @@
  */
 package com.rmr662.frc2012.controller;
 
+import com.rmr662.frc2012.RMRRobot;
 import com.rmr662.frc2012.controller.function.DriveFunction;
+import com.rmr662.frc2012.controller.function.DrivePIDTuningFunction;
 import com.rmr662.frc2012.generic.Controller;
 import com.rmr662.frc2012.generic.Function;
 import edu.wpi.first.wpilibj.Joystick;
@@ -24,12 +26,13 @@ public class TeleopController implements Controller {
         for (int i = 0; i < joysticks.length; i++) {
             joysticks[i] = new Joystick(JOYSTICKS[i]);
         }
-        functions = new Function[1];
+        functions = new Function[2];
         functions[0] = new DriveFunction(joysticks);
+        functions[1] = new DrivePIDTuningFunction(joysticks);
     }
 
     public void run() {
-        while (true) {
+        while (RMRRobot.robot.isOperatorControl() && !RMRRobot.robot.isDisabled()) {
             for (int i = 0; i < functions.length; i++) {
                 functions[i].run();
             }
