@@ -17,8 +17,8 @@ public class ShooterArm extends Component {
     private static ShooterArm instance;
     
     //TODO: put in motor channel, switch channel, and motor speed
-    private static int MOTOR_CHANNEL;
-    private static int SWITCH_CHANNEL;
+    private static int MOTOR_CHANNEL = 3;
+    private static int SWITCH_CHANNEL = 4;
     private static double MOTOR_SPEED;
     
     private static boolean MOTOR_IS_WIRED_WRONG = false;

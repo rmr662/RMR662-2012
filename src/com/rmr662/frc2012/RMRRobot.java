@@ -10,6 +10,7 @@ package com.rmr662.frc2012;
 import com.rmr662.frc2012.component.CameraComponent;
 import com.rmr662.frc2012.component.Drive;
 import com.rmr662.frc2012.component.RMRCompressor;
+import com.rmr662.frc2012.component.TransmissionComponent;
 import com.rmr662.frc2012.controller.TeleopController;
 import com.rmr662.frc2012.generic.Component;
 import com.rmr662.frc2012.generic.Controller;
@@ -62,9 +63,10 @@ public class RMRRobot extends SimpleRobot {
      */
     protected void robotInit() {
        robot = this;
-       components = new Component[1];
+       components = new Component[3];
        components[0] = Drive.getInstance();
-       //components[1] = RMRCompressor.getInstance();
+       components[1] = RMRCompressor.getInstance();
+       components[2] = TransmissionComponent.getInstance();
        //components[2] = BallBucket.getInstance();
        //components[3] = ShooterArm.getInstance();
        //components[2] = CameraComponent.getInstance();

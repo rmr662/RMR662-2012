@@ -19,7 +19,7 @@ public class RMRCompressor extends Component {
     private static final int SWITCH = 0;
     private static final int RELAY = 1;
     
-    private static final int[] COMPRESSOR_CHANNEL = {7,1};
+    private static final int[] COMPRESSOR_CHANNEL = {11,1};
     private static final int COMPRESSOR_SWITCH_CHANNEL = 12;
     
     private Compressor compressor;

@@ -23,7 +23,7 @@ public class Drive extends Component {
     public static final int LEFT = 0;
     public static final int RIGHT = 1;
     private static final double DISTANCE_PER_PULSE = 0.001198473; //0.001198473 0.000465839
-    private boolean pidEnabled = true;
+    private boolean pidEnabled = false;
     private static final double[] KP = {0.05, 0.05};
     private static final double[] KI = {0.0, 0.0};
     private static final double[] KD = {0.0, 0.0};
@@ -35,7 +35,7 @@ public class Drive extends Component {
     private RMREncoder[] encoders = new RMREncoder[ENCODER_CHANNELS_A.length];
     private PIDController[] controllers = new PIDController[MOTOR_CHANNELS.length];
     private double[] targetValues = {0d, 0d};
-    
+
     /**
      * Creates a new Drive component with motors and encoders on the default
      * channels
@@ -66,9 +66,10 @@ public class Drive extends Component {
             targetValues[i] = 0d;
         }
     }
-    
+
     /**
      * Set the target values for the motors.
+     *
      * @param leftValue desired left motor target value
      * @param rightValue desired right motor target value
      */
@@ -78,11 +79,16 @@ public class Drive extends Component {
         System.out.println("Left : " + leftValue);
         System.out.println("Right: " + rightValue);
     }
-    
+
+    public boolean isMoving() {
+        return (Math.abs(encoders[LEFT].getRate()) > .1 && Math.abs(encoders[RIGHT].getRate()) > .1);
+    }
+
     /**
      * Sets motor values based on a left and right target value.
+     *
      * @param leftValue
-     * @param rightValue 
+     * @param rightValue
      */
     public void tankDrive(double leftValue, double rightValue) {
         leftValue = limit(leftValue);
@@ -118,6 +124,7 @@ public class Drive extends Component {
 
     /**
      * Adds deltas to the gains on the PID controllers
+     *
      * @param p change in KP
      * @param i change in KI
      * @param d change in KD
@@ -130,6 +137,7 @@ public class Drive extends Component {
 
     /**
      * Enables or disables the PID
+     *
      * @param enabled whether or not the PID should be enabled.
      */
     public void setPID(boolean enabled) {
@@ -144,25 +152,25 @@ public class Drive extends Component {
             }
         }
     }
-    
+
     /**
-     * 
+     *
      * @return The current P value for the left controller
      */
-    public double getP(){
+    public double getP() {
         return controllers[LEFT].getP();
     }
-    
+
     /**
-     * 
+     *
      * @return The current I value for the left controller
      */
     public double getI() {
         return controllers[LEFT].getI();
     }
-    
+
     /**
-     * 
+     *
      * @return The current D value for the left controller
      */
     public double getD() {
@@ -175,7 +183,7 @@ public class Drive extends Component {
     public void enablePID() {
         setPID(true);
     }
-    
+
     /**
      * Disables the PID
      */

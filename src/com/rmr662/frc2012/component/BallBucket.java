@@ -15,10 +15,10 @@ import edu.wpi.first.wpilibj.Solenoid;
 public class BallBucket extends Component {
 
     private static BallBucket instance;
-    private static final int NORMAL_CHANNEL_ELBOW = 0;
-    private static final int INVERTED_CHANNEL_ELBOW = 1;
-    private static final int NORMAL_CHANNEL_WRIST = 0;
-    private static final int INVERTED_CHANNEL_WRIST = 1;
+    private static final int NORMAL_CHANNEL_ELBOW = 1;
+    private static final int INVERTED_CHANNEL_ELBOW = 2;
+    private static final int NORMAL_CHANNEL_WRIST = 3;
+    private static final int INVERTED_CHANNEL_WRIST = 4;
     private static final boolean DEFAULT_STATE_ELBOW = false;
     private static final boolean DEFAULT_STATE_WRIST = false;
     private RMRSolenoidSystem elbowSolenoid;
