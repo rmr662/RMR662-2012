@@ -20,17 +20,17 @@ import edu.wpi.first.wpilibj.PIDController;
 public class Drive extends Component {
 
     private volatile static Drive instance;
-    private static final int LEFT = 0;
-    private static final int RIGHT = 1;
+    public static final int LEFT = 0;
+    public static final int RIGHT = 1;
     private static final double DISTANCE_PER_PULSE = 0.001198473; //0.001198473 0.000465839
-    private boolean pidEnabled = false;
+    private boolean pidEnabled = true;
     private static final double[] KP = {0.05, 0.05};
     private static final double[] KI = {0.0, 0.0};
     private static final double[] KD = {0.0, 0.0};
     private static final double MAX_SPEED = 2d;
     private static final int[] MOTOR_CHANNELS = {1, 2};
-    private static final int[] ENCODER_CHANNELS_A = {3, 5};
-    private static final int[] ENCODER_CHANNELS_B = {4, 6};
+    private static final int[] ENCODER_CHANNELS_A = {6, 8};
+    private static final int[] ENCODER_CHANNELS_B = {7, 9};
     private RMRJaguar[] motors = new RMRJaguar[MOTOR_CHANNELS.length];
     private RMREncoder[] encoders = new RMREncoder[ENCODER_CHANNELS_A.length];
     private PIDController[] controllers = new PIDController[MOTOR_CHANNELS.length];
@@ -49,7 +49,9 @@ public class Drive extends Component {
             encoders[i].start();
             encoders[i].setPIDSourceParameter(Encoder.PIDSourceParameter.kRate);
             controllers[i] = new PIDController(KP[i], KI[i], KD[i], encoders[i], motors[i]);
-            controllers[i].enable();
+            if (pidEnabled) {
+                controllers[i].enable();
+            }
             controllers[i].setInputRange(-MAX_SPEED, MAX_SPEED);
         }
         encoders[LEFT].setReverseDirection(true);
@@ -57,7 +59,6 @@ public class Drive extends Component {
 
     public void update() {
         tankDrive(targetValues[LEFT], targetValues[RIGHT]);
-        System.out.println("PID: " + controllers[LEFT].getP() + ", " + controllers[LEFT].getI() + ", " + controllers[LEFT].getD());
     }
 
     public void reset() {
@@ -74,16 +75,8 @@ public class Drive extends Component {
     public synchronized void setTargetValues(double leftValue, double rightValue) {
         targetValues[LEFT] = leftValue;
         targetValues[RIGHT] = rightValue;
-    }
-
-    /**
-     * Set the target values for the motors.
-     * @param joysticks the joysticks to use to set the motor targets.
-     */
-    public synchronized void setTargetValues(Joystick[] joysticks) {
-        for (int i = 0; i < joysticks.length; i++) {
-            targetValues[i] = -(joysticks[i].getY());
-        }
+        System.out.println("Left : " + leftValue);
+        System.out.println("Right: " + rightValue);
     }
     
     /**
@@ -150,6 +143,30 @@ public class Drive extends Component {
                 controllers[i].disable();
             }
         }
+    }
+    
+    /**
+     * 
+     * @return The current P value for the left controller
+     */
+    public double getP(){
+        return controllers[LEFT].getP();
+    }
+    
+    /**
+     * 
+     * @return The current I value for the left controller
+     */
+    public double getI() {
+        return controllers[LEFT].getI();
+    }
+    
+    /**
+     * 
+     * @return The current D value for the left controller
+     */
+    public double getD() {
+        return controllers[LEFT].getD();
     }
 
     /**
