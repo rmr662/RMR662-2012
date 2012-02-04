@@ -29,8 +29,8 @@ public class Drive extends Component {
     private static final double[] KD = {0.0, 0.0};
     private static final double MAX_SPEED = 2d;
     private static final int[] MOTOR_CHANNELS = {1, 2};
-    private static final int[] ENCODER_CHANNELS_A = {3, 5};
-    private static final int[] ENCODER_CHANNELS_B = {4, 6};
+    private static final int[] ENCODER_CHANNELS_A = {6, 8};
+    private static final int[] ENCODER_CHANNELS_B = {7, 9};
     private RMRJaguar[] motors = new RMRJaguar[MOTOR_CHANNELS.length];
     private RMREncoder[] encoders = new RMREncoder[ENCODER_CHANNELS_A.length];
     private PIDController[] controllers = new PIDController[MOTOR_CHANNELS.length];

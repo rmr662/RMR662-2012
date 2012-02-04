@@ -62,9 +62,9 @@ public class RMRRobot extends SimpleRobot {
      */
     protected void robotInit() {
        robot = this;
-       components = new Component[2];
+       components = new Component[1];
        components[0] = Drive.getInstance();
-       components[1] = RMRCompressor.getInstance();
+       //components[1] = RMRCompressor.getInstance();
        //components[2] = BallBucket.getInstance();
        //components[3] = ShooterArm.getInstance();
        //components[2] = CameraComponent.getInstance();
@@ -72,6 +72,9 @@ public class RMRRobot extends SimpleRobot {
     
     protected void disabled() {
         try {
+             for (int i = 0; i < components.length; i++) {
+                 components[i].reset();
+             }
             controllerThread.join();
         } catch(NullPointerException e) {
             System.out.println("No controller thread was running.");
