@@ -26,12 +26,21 @@ public class CameraComponent extends Component{
     private double currentTiltState;
     private double targetTiltState;
     
+    private static CameraComponent instance = null;
+    
     /**
      * Creates a CameraComponent with servos on the default channels
      */
     public CameraComponent(){
         servoPan = new Servo(PAN);
         servoTilt = new Servo(TILT);
+    }
+    
+    public static CameraComponent getInstance(){
+        if(instance == null){
+            instance = new CameraComponent();
+        }
+        return instance;
     }
     
     public void update() {
