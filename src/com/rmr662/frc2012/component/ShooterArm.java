@@ -26,12 +26,20 @@ public class ShooterArm extends Component {
     private RMRJaguar motor;
     private DigitalInput limitSwitch;
     private boolean shooting = false;
+    
+    /**
+     * sets limitSwitch as a digital input
+     */
 
     public ShooterArm() {
         motor = new RMRJaguar(MOTOR_CHANNEL);
         motor.setInverted(MOTOR_IS_WIRED_WRONG);
         limitSwitch = new DigitalInput(SWITCH_CHANNEL);
     }
+    
+    /**
+     * if the limit switch is hit stops motor, if not sets the motor speed
+     */
 
     public void update() {
         boolean localShooting;
@@ -44,7 +52,11 @@ public class ShooterArm extends Component {
             motor.set(MOTOR_SPEED);
         }
     }
-
+    
+    /*
+     * stops motor if not shooting 
+     */
+    
     public void reset() {
         synchronized (this) {
             shooting = false;
@@ -52,10 +64,15 @@ public class ShooterArm extends Component {
 
         motor.stopMotor();
     }
+ 
 
     public String getRMRName() {
         return "Shooter Arm";
     }
+    
+    /*
+     * creates new instance ShooterArm
+     */
 
     public static ShooterArm getInstance() {
         if (instance == null) {
@@ -63,6 +80,10 @@ public class ShooterArm extends Component {
         }
         return instance;
     }
+    
+    /*
+     * sets target values as shoot for shooting
+     */
 
     public synchronized void setShooting(boolean shoot) {
         shooting = shoot;

@@ -18,6 +18,12 @@ public class TransmissionComponent extends Component {
     private RMRSolenoidSystem solenoidSystem;
     private static TransmissionComponent instance = null;
 
+   /**
+    * creates the instance for TransmissionComponent if none exists
+    * prevents more than one instance from being created
+    * @return 
+    */
+    
     public static TransmissionComponent getInstance() {
         if (instance == null) {
             instance = new TransmissionComponent();
@@ -25,21 +31,41 @@ public class TransmissionComponent extends Component {
         return instance;
     }
 
-    public TransmissionComponent() {
+    /**
+     * constructor
+     */
+    
+    private TransmissionComponent() {
         solenoidSystem = new RMRSolenoidSystem(new Solenoid(5), new Solenoid(6));
     }
 
+    /**
+     * sets transmission as low
+     */
+    
     public void setTransmissionHigh() {
         transmissionLow = false;
     }
+    
+    /**
+     * sets transmission as high
+     */
 
     public void setTransmissionLow() {
         transmissionLow = true;
     }
+    
+    /**
+     * switches transmission
+     */
 
     public void toggleTransmission() {
         transmissionLow = !transmissionLow;
     }
+    
+    /**
+     * sets the transmission if the robot is moving
+     */
 
     public void update() {
         if (Drive.getInstance().isMoving()) {
@@ -47,6 +73,10 @@ public class TransmissionComponent extends Component {
         }
     }
 
+    /**
+     * resets target values for transmissionLow
+     */
+    
     public void reset() {
         transmissionLow = true;
     }

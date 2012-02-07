@@ -23,7 +23,7 @@ public class Drive extends Component {
     public static final int LEFT = 0;
     public static final int RIGHT = 1;
     private static final double DISTANCE_PER_PULSE = 0.001198473; //0.001198473 0.000465839
-    private boolean pidEnabled = false;
+    private boolean pidEnabled = true;
     private static final double[] KP = {0.05, 0.05};
     private static final double[] KI = {0.0, 0.0};
     private static final double[] KD = {0.0, 0.0};

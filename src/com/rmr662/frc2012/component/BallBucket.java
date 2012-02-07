@@ -26,6 +26,10 @@ public class BallBucket extends Component {
     private boolean targetElbowValue;
     private boolean targetWristValue;
 
+    /**
+     * creates and assigns default states for solenoid variables
+     */
+    
     public BallBucket() {
         elbowSolenoid = new RMRSolenoidSystem(new Solenoid(NORMAL_CHANNEL_ELBOW), new Solenoid(INVERTED_CHANNEL_ELBOW));
         elbowSolenoid.set(DEFAULT_STATE_ELBOW);
@@ -34,6 +38,11 @@ public class BallBucket extends Component {
         wristSolenoid.set(DEFAULT_STATE_WRIST);
     }
 
+    /**
+     * synchronizes localTarget Elbow- and WristValue with target Elbow and WristValue 
+     * sets target values for elbow- and wristSolenoid as localTargetElbowValue and localTargetWristValue
+     */
+    
     public void update() {
         boolean localTargetElbowValue;
         boolean localTargetWristValue;
@@ -46,6 +55,10 @@ public class BallBucket extends Component {
         wristSolenoid.set(localTargetWristValue);
     }
 
+    /**
+     * resets targetElbow- and targetWristValue to their default states
+     */
+    
     public void reset() {
         synchronized (this) {
             targetElbowValue = DEFAULT_STATE_ELBOW;
@@ -56,6 +69,12 @@ public class BallBucket extends Component {
     public String getRMRName() {
         return "Ball Bucket";
     }
+    
+    /**
+     * creates the instance for the ball bucket if none is currently existent
+     * prevents more than one ball bucket instance from being created
+     * @return 
+     */
 
     public static BallBucket getInstance() {
         if (instance == null) {
@@ -63,10 +82,20 @@ public class BallBucket extends Component {
         }
         return instance;
     }
+    
+    /**
+     * sets target values as down
+     * @param down 
+     */
 
     public synchronized void setElbowTarget(boolean down) {
         targetElbowValue = down;
     }
+        
+    /**
+     * sets target values as down
+     * @param down 
+     */
 
     public synchronized void setWristTarget(boolean down) {
         targetWristValue = down;

@@ -16,13 +16,26 @@ public class CameraFunction extends Function {
     
     private Joystick joystick;
     
+    /**
+     * constructor
+     * @param joystick 
+     */
+    
     public CameraFunction(Joystick joystick) {
         this.joystick = joystick;
     }
     
+    /**
+     * resets the target values of the instance to their default state
+     */
+    
     protected void defaultState() {
         CameraComponent.getInstance().reset();
     }
+    
+    /**
+     * gets the input to move the camera's motors and thus the camera
+     */
 
     protected void update() {
         double y = joystick.getY() + 1;
