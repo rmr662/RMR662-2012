@@ -44,7 +44,7 @@ public class CameraFunction extends Function {
         double x = joystick.getX() + 1;
         x /= 2;
 
-        CameraComponent.getInstance().setPanTargetState(x);
+        //CameraComponent.getInstance().setPanTargetState(x);
         CameraComponent.getInstance().setTiltTargetState(y);
 
     }

@@ -6,9 +6,7 @@ package com.rmr662.frc2012.controller;
 
 import com.rmr662.frc2012.RMRRobot;
 import com.rmr662.frc2012.component.Drive;
-import com.rmr662.frc2012.controller.function.DriveFunction;
-import com.rmr662.frc2012.controller.function.DrivePIDTuningFunction;
-import com.rmr662.frc2012.controller.function.TransmissionFunction;
+import com.rmr662.frc2012.controller.function.*;
 import com.rmr662.frc2012.generic.Controller;
 import com.rmr662.frc2012.generic.Function;
 import edu.wpi.first.wpilibj.Joystick;
@@ -19,8 +17,8 @@ import edu.wpi.first.wpilibj.Joystick;
  */
 public class TeleopController implements Controller {
 
-    private static final int[] JOYSTICKS = {1, 2};
-    private Joystick[] joysticks = new Joystick[2];
+    private static final int[] JOYSTICKS = {1, 2, 3};
+    private Joystick[] joysticks = new Joystick[3];
     private Function[] functions;
     private static TeleopController instance = null;
 
@@ -28,10 +26,12 @@ public class TeleopController implements Controller {
         for (int i = 0; i < joysticks.length; i++) {
             joysticks[i] = new Joystick(JOYSTICKS[i]);
         }
-        functions = new Function[3];
+        functions = new Function[5];
         functions[0] = new DriveFunction(joysticks);
         functions[1] = new DrivePIDTuningFunction(joysticks);
         functions[2] = new TransmissionFunction(joysticks[Drive.RIGHT]);
+        functions[3] = new CameraFunction(joysticks[2]);
+        functions[4] = new BalancingFunction(joysticks[2]);
     }
 
     public void run() {

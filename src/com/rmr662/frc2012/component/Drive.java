@@ -75,9 +75,7 @@ public class Drive extends Component {
      */
     public synchronized void setTargetValues(double leftValue, double rightValue) {
         targetValues[LEFT] = leftValue;
-        targetValues[RIGHT] = rightValue;
-        System.out.println("Left : " + leftValue);
-        System.out.println("Right: " + rightValue);
+        targetValues[RIGHT] = rightValue;       
     }
 
     public boolean isMoving() {

@@ -36,11 +36,12 @@ public class RMRCompressor extends Component {
     }
     
     public void update() {
+      //  System.out.println("Compressor " + compressor.enabled() + " : " + disableSwitch.get());
         if (disableSwitch.get()) {
             compressor.stop();
         } else {
             if (!compressor.enabled()) {
-                compressor.start();
+                compressor.start();                
             }
         }
     }

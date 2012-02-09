@@ -56,7 +56,7 @@ public class RMRRobot extends SimpleRobot {
         while (isEnabled()) {
             try {
                 for(int i = 0; i < components.length; ++i) {
-                    components[i].setEnabled(NetworkTable.getTable("components").getBoolean(components[i].getRMRName()));
+                  //  components[i].setEnabled(NetworkTable.getTable("components").getBoolean(components[i].getRMRName()));
                 }
             } catch (Exception e) {
             }
