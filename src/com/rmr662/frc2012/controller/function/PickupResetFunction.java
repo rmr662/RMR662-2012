@@ -28,7 +28,7 @@ public class PickupResetFunction extends Function {
         for (int i = 0; i < isPressed.length; ++i) {
             if (joystick.getRawButton(i + 1) && !isPressed[i]) {
                 switch (i + 1) {
-                    case 3:
+                    case 2:
                         this.reset();
                     default:
                         break;
@@ -47,6 +47,5 @@ public class PickupResetFunction extends Function {
 
     private void reset() {
         BallBucket.getInstance().setElbowTarget(false);
-        BallBucket.getInstance().setWristTarget(false);
     }
 }
