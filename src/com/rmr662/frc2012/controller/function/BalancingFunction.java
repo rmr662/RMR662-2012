@@ -18,18 +18,36 @@ public class BalancingFunction extends Function{
     Joystick joystick;
     RMRAccelerometer acceler;
     
+    /**
+     * Constructor 
+     * @param joystick 
+     */
+    
     public BalancingFunction (Joystick joystick){
         this.joystick = joystick;
         acceler = RMRAccelerometer.getInstance();
         //setEnabled(false); Need to disable and wait for endgame
     }
     
+    /**
+     * resets the state drive 
+     */
+    
     protected void defaultState() {
         Drive.getInstance().reset();
     }
+    
+    /**
+     * gets and prints Adj Y accelerometer value
+     */
 
     protected void update() {
         System.out.println(acceler.getAdjYAccel());
+        
+        /**
+         * If the button pushed when the robot is past the error margin then it
+         * moves toward the corrected position
+         */
 
         if(joystick.getRawButton(1)){
           
@@ -37,14 +55,22 @@ public class BalancingFunction extends Function{
               System.out.println("Forward");
               Drive.getInstance().setTargetValues(0.38, 0.38);
           }
+
           else if(acceler.getAdjYAccel() > 0.06){
               System.out.println("Backward");
               Drive.getInstance().setTargetValues(-0.38, -0.38);
           }
+          
+          /**
+           * resets the Drive value
+           */
           else{
               Drive.getInstance().reset();
           }
         }
+        /**
+         * resets the Drive value
+         */
         else{
             Drive.getInstance().reset();
         }

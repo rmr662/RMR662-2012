@@ -6,6 +6,7 @@ package com.rmr662.frc2012.controller.function;
 
 import com.rmr662.frc2012.component.Drive;
 import com.rmr662.frc2012.generic.Function;
+import edu.wpi.first.wpilibj.DriverStationLCD;
 import edu.wpi.first.wpilibj.Joystick;
 
 /**
@@ -21,12 +22,21 @@ public class DrivePIDTuningFunction extends Function {
     private double relativeITuning = 0.01;
     private double relativeDTuning = 0.01;
     
+    /**
+     * Constructor
+     * @param joysticks 
+     */
+    
     public DrivePIDTuningFunction(Joystick[] joysticks) {
         this.joysticks = joysticks;
         for(int i = 0; i < isPressed.length; ++i) {
             isPressed[i] = false;
         }
     }
+    
+    /**
+     * Updates PID values if the joystick moves left
+     */
     
     protected void update() {
         // TODO: differentiate between right and left
@@ -71,7 +81,11 @@ public class DrivePIDTuningFunction extends Function {
             }
             isPressed[i] = joysticks[Drive.LEFT].getRawButton(i + 1);
         }
-//        System.out.println("PID: " + Drive.getInstance().getP() + ", " + Drive.getInstance().getI() + ", " + Drive.getInstance().getD());
+//      System.out.println("PID:dd " + Drive.getInstance().getP() + ", " + Drive.getInstance().getI() + ", " + Drive.getInstance().getD());
+        DriverStationLCD.getInstance().println(DriverStationLCD.Line.kUser6, 1, "P: " + Drive.getInstance().getP());
+        DriverStationLCD.getInstance().println(DriverStationLCD.Line.kUser5, 1, "I: " + Drive.getInstance().getI());
+        DriverStationLCD.getInstance().println(DriverStationLCD.Line.kUser4, 1, "D: " + Drive.getInstance().getD());
+        DriverStationLCD.getInstance().updateLCD();
     }
     
     protected void defaultState() {

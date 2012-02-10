@@ -16,14 +16,27 @@ public class DriveFunction extends Function {
     
     private Joystick[] joysticks;
     
+    /**
+     * constructor
+     * @param joysticks 
+     */
+    
     public DriveFunction(Joystick[] joysticks) {
         this.joysticks = joysticks;
     }
+    
+    /**
+     * sets target values for the drive instance and the joystick
+     */
     
     protected void update() {
         Drive.getInstance().setTargetValues(-joysticks[Drive.LEFT].getY(),
                 -joysticks[Drive.RIGHT].getY());
     }
+    
+    /**
+     * resets the target values for the instance to their default state
+     */
     
     protected void defaultState() {
         Drive.getInstance().reset();

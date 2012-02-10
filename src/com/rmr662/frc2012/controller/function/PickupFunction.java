@@ -6,7 +6,6 @@ package com.rmr662.frc2012.controller.function;
 
 import com.rmr662.frc2012.component.BallBucket;
 import com.rmr662.frc2012.generic.Function;
-import com.rmr662.frc2012.physical.RMRSolenoidSystem;
 import edu.wpi.first.wpilibj.Joystick;
 
 /**
@@ -30,9 +29,6 @@ public class PickupFunction extends Function {
             if (joystick.getRawButton(i + 1) && !isPressed[i]) {
                 switch (i + 1) {
                     case 1:
-                        this.prepare();
-                        break;
-                    case 2:
                         this.activate();
                         break;
                     default:
@@ -47,11 +43,7 @@ public class PickupFunction extends Function {
         BallBucket.getInstance().reset();
     }
 
-    private void prepare() {
-        BallBucket.getInstance().setElbowTarget(true);
-    }
-
     private void activate() {
-        BallBucket.getInstance().setWristTarget(true);
+        BallBucket.getInstance().setElbowTarget(true);
     }
 }
