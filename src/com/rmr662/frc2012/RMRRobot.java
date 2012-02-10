@@ -10,11 +10,13 @@ package com.rmr662.frc2012;
 import com.rmr662.frc2012.component.CameraComponent;
 import com.rmr662.frc2012.component.Drive;
 import com.rmr662.frc2012.component.RMRCompressor;
+import com.rmr662.frc2012.component.TransmissionComponent;
 import com.rmr662.frc2012.controller.TeleopController;
 import com.rmr662.frc2012.generic.Component;
 import com.rmr662.frc2012.generic.Controller;
 import edu.wpi.first.wpilibj.SimpleRobot;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -52,6 +54,12 @@ public class RMRRobot extends SimpleRobot {
         controllerThread = new Thread(activeController);
         controllerThread.start();
         while (isEnabled()) {
+            try {
+                for(int i = 0; i < components.length; ++i) {
+                  //  components[i].setEnabled(NetworkTable.getTable("components").getBoolean(components[i].getRMRName()));
+                }
+            } catch (Exception e) {
+            }
             updateComponents();
             Timer.delay(PERIOD);
         }
@@ -62,12 +70,14 @@ public class RMRRobot extends SimpleRobot {
      */
     protected void robotInit() {
        robot = this;
-       components = new Component[1];
+       components = new Component[4];
        components[0] = Drive.getInstance();
-       //components[1] = RMRCompressor.getInstance();
+       components[1] = RMRCompressor.getInstance();
+       components[2] = TransmissionComponent.getInstance();
        //components[2] = BallBucket.getInstance();
        //components[3] = ShooterArm.getInstance();
-       //components[2] = CameraComponent.getInstance();
+       //components[i] = ShooterTurret.getInstance();
+       components[3] = CameraComponent.getInstance();
     }
     
     protected void disabled() {

@@ -19,7 +19,7 @@ public class RMRCompressor extends Component {
     private static final int SWITCH = 0;
     private static final int RELAY = 1;
     
-    private static final int[] COMPRESSOR_CHANNEL = {7,1};
+    private static final int[] COMPRESSOR_CHANNEL = {11,1};
     private static final int COMPRESSOR_SWITCH_CHANNEL = 12;
     
     private Compressor compressor;
@@ -36,11 +36,12 @@ public class RMRCompressor extends Component {
     }
     
     public void update() {
+      //  System.out.println("Compressor " + compressor.enabled() + " : " + disableSwitch.get());
         if (disableSwitch.get()) {
             compressor.stop();
         } else {
             if (!compressor.enabled()) {
-                compressor.start();
+                compressor.start();                
             }
         }
     }
