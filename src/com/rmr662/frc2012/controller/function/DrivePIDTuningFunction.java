@@ -89,9 +89,6 @@ public class DrivePIDTuningFunction extends Function {
     }
     
     protected void defaultState() {
-        for (int i=0; i<isPressed.length; ++i){
-            isPressed[i] = false;
-        }
         
     }
 }

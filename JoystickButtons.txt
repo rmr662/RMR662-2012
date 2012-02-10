@@ -1,0 +1,4 @@
+Joystick Buttons
+--
+Activate Pickup - 1
+Deactivate Pickup - 2

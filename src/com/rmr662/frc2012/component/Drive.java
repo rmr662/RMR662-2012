@@ -8,7 +8,6 @@ import com.rmr662.frc2012.generic.Component;
 import com.rmr662.frc2012.physical.RMREncoder;
 import com.rmr662.frc2012.physical.RMRJaguar;
 import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PIDController;
 
 /**
@@ -75,7 +74,7 @@ public class Drive extends Component {
      */
     public synchronized void setTargetValues(double leftValue, double rightValue) {
         targetValues[LEFT] = leftValue;
-        targetValues[RIGHT] = rightValue;       
+        targetValues[RIGHT] = rightValue;
     }
 
     public boolean isMoving() {

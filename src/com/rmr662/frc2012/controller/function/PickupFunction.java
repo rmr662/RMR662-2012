@@ -5,6 +5,7 @@
 package com.rmr662.frc2012.controller.function;
 
 import com.rmr662.frc2012.component.BallBucket;
+import com.rmr662.frc2012.component.Turret;
 import com.rmr662.frc2012.generic.Function;
 import edu.wpi.first.wpilibj.Joystick;
 
@@ -29,9 +30,12 @@ public class PickupFunction extends Function {
             if (joystick.getRawButton(i + 1) && !isPressed[i]) {
                 switch (i + 1) {
                     case 1:
-                        this.activate();
+                        if (Turret.getInstance().isCentered()) {
+                            BallBucket.getInstance().setElbowTarget(true);
+                        }
                         break;
-                    default:
+                    case 2:
+                        BallBucket.getInstance().setElbowTarget(false);
                         break;
                 }
                 isPressed[i] = joystick.getRawButton(i + 1);
@@ -43,7 +47,4 @@ public class PickupFunction extends Function {
         BallBucket.getInstance().reset();
     }
 
-    private void activate() {
-        BallBucket.getInstance().setElbowTarget(true);
-    }
 }

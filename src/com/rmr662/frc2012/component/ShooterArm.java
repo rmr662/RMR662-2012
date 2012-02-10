@@ -6,7 +6,7 @@ package com.rmr662.frc2012.component;
 
 import com.rmr662.frc2012.generic.Component;
 import com.rmr662.frc2012.physical.RMRJaguar;
-import edu.wpi.first.wpilibj.DigitalInput;
+import com.rmr662.frc2012.physical.RMRLimitSwitch;
 
 /**
  *
@@ -15,77 +15,74 @@ import edu.wpi.first.wpilibj.DigitalInput;
 public class ShooterArm extends Component {
 
     private static ShooterArm instance;
-    
     //TODO: put in motor channel, switch channel, and motor speed
     private static int MOTOR_CHANNEL = 3;
     private static int SWITCH_CHANNEL = 4;
     private static double MOTOR_SPEED;
-    
-    private static boolean MOTOR_IS_WIRED_WRONG = false;
-    
+    private static boolean MOTOR_INVERTED = false;
     private RMRJaguar motor;
-    private DigitalInput limitSwitch;
-    private boolean shooting = false;
-    
+    private RMRLimitSwitch limitSwitch;
+    private boolean shootingTarget = false;
+
     /**
      * sets limitSwitch as a digital input
      */
-
     public ShooterArm() {
         motor = new RMRJaguar(MOTOR_CHANNEL);
-        motor.setInverted(MOTOR_IS_WIRED_WRONG);
-        limitSwitch = new DigitalInput(SWITCH_CHANNEL);
+        motor.setInverted(MOTOR_INVERTED);
+        limitSwitch = new RMRLimitSwitch(SWITCH_CHANNEL, false);
     }
-    
+
     /**
      * if the limit switch is hit stops motor, if not sets the motor speed
      */
-
     public void update() {
-        boolean localShooting;
+        boolean localShootingTarget;
         synchronized (this) {
-            localShooting = shooting;
+            localShootingTarget = shootingTarget;
         }
-        if (limitSwitch.get() && !localShooting) {
+        if (!BallLoader.getInstance().isReadyToFire()) {
+            localShootingTarget = false;
+        }
+        if (limitSwitch.get() && !localShootingTarget) {
+            motor.set(0d);
             motor.stopMotor();
         } else {
             motor.set(MOTOR_SPEED);
         }
     }
-    
+
     /*
-     * stops motor if not shooting 
+     * stops motor if not shooting
      */
-    
     public void reset() {
         synchronized (this) {
-            shooting = false;
+            shootingTarget = false;
         }
-
-        motor.stopMotor();
     }
- 
 
     public String getRMRName() {
         return "Shooter Arm";
     }
-    
-    /*
+
+    /*S
      * creates new instance ShooterArm
      */
-
     public static ShooterArm getInstance() {
         if (instance == null) {
             instance = new ShooterArm();
         }
         return instance;
     }
-    
+
     /*
      * sets target values as shoot for shooting
      */
-
-    public synchronized void setShooting(boolean shoot) {
-        shooting = shoot;
+    public synchronized void setShooting(boolean shootingTarget) {
+        this.shootingTarget = shootingTarget;
+    }
+    
+    public synchronized boolean isShooting() {
+        return shootingTarget;
     }
 }
