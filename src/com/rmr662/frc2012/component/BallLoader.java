@@ -7,6 +7,7 @@ package com.rmr662.frc2012.component;
 import com.rmr662.frc2012.generic.Component;
 import com.rmr662.frc2012.physical.RMRLimitSwitch;
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
 /**
  *
@@ -53,6 +54,7 @@ public class BallLoader extends Component {
     
     public synchronized void setTargetState(boolean up) {
         this.targetState = up;
+        NetworkTable.getTable("status").putBoolean("ballLoaderUp", up);
     }
     
     public static BallLoader getInstance() {

@@ -7,6 +7,7 @@ package com.rmr662.frc2012.component;
 import com.rmr662.frc2012.generic.Component;
 import com.rmr662.frc2012.physical.RMRJaguar;
 import com.rmr662.frc2012.physical.RMRLimitSwitch;
+import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
 /**
  *
@@ -80,6 +81,7 @@ public class ShooterArm extends Component {
      */
     public synchronized void setShooting(boolean shootingTarget) {
         this.shootingTarget = shootingTarget;
+        NetworkTable.getTable("status").putBoolean("shootingTarget", shootingTarget);
     }
     
     public synchronized boolean isShooting() {

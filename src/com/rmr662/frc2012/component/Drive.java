@@ -9,6 +9,7 @@ import com.rmr662.frc2012.physical.RMREncoder;
 import com.rmr662.frc2012.physical.RMRJaguar;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
 /**
  * This class represents the drive wheels of the robot and knows how to control
@@ -40,6 +41,7 @@ public class Drive extends Component {
      * channels
      */
     private Drive() {
+        NetworkTable.getTable("status").putBoolean("pidEnabled", pidEnabled);
         for (int i = 0; i < MOTOR_CHANNELS.length; i++) {
             motors[i] = new RMRJaguar(MOTOR_CHANNELS[i]);
             motors[i].setInverted(true);
@@ -139,6 +141,7 @@ public class Drive extends Component {
      */
     public void setPID(boolean enabled) {
         pidEnabled = enabled;
+        NetworkTable.getTable("status").putBoolean("pidEnabled", pidEnabled);
         if (enabled) {
             for (int i = 0; i < controllers.length; ++i) {
                 controllers[i].enable();

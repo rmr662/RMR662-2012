@@ -7,6 +7,7 @@ package com.rmr662.frc2012.component;
 import com.rmr662.frc2012.generic.Component;
 import com.rmr662.frc2012.physical.RMRSolenoidSystem;
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
 /**
  *
@@ -45,6 +46,7 @@ public class Transmission extends Component {
     
     public void setTransmissionHigh() {
         transmissionLow = false;
+        NetworkTable.getTable("status").putBoolean("transmissionLow", transmissionLow);
     }
     
     /**
@@ -53,6 +55,7 @@ public class Transmission extends Component {
 
     public void setTransmissionLow() {
         transmissionLow = true;
+        NetworkTable.getTable("status").putBoolean("transmissionLow", transmissionLow);
     }
     
     /**
