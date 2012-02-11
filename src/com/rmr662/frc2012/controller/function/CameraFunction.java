@@ -4,7 +4,7 @@
  */
 package com.rmr662.frc2012.controller.function;
 
-import com.rmr662.frc2012.component.CameraComponent;
+import com.rmr662.frc2012.component.Camera;
 import com.rmr662.frc2012.generic.Function;
 import edu.wpi.first.wpilibj.Joystick;
 
@@ -30,7 +30,7 @@ public class CameraFunction extends Function {
      */
     
     protected void defaultState() {
-        CameraComponent.getInstance().reset();
+        Camera.getInstance().reset();
     }
     
     /**
@@ -45,7 +45,7 @@ public class CameraFunction extends Function {
         x /= 2;
 
         //CameraComponent.getInstance().setPanTargetState(x);
-        CameraComponent.getInstance().setTiltTargetState(y);
+        Camera.getInstance().setTiltTargetState(y);
 
     }
 }

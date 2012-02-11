@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.Servo;
  *
  * @author RMR Programming
  */
-public class CameraComponent extends Component{
+public class Camera extends Component{
     
     //private static final int PAN = 10;
     private static final int TILT = 5;
@@ -26,19 +26,19 @@ public class CameraComponent extends Component{
     private double currentTiltState;
     private double targetTiltState;
     
-    private static CameraComponent instance = null;
+    private static Camera instance = null;
     
     /**
      * Creates a CameraComponent with servos on the default channels
      */
-    public CameraComponent(){
+    public Camera(){
       //  servoPan = new Servo(PAN);
         servoTilt = new Servo(TILT);
     }
     
-    public static CameraComponent getInstance(){
+    public static Camera getInstance(){
         if(instance == null){
-            instance = new CameraComponent();
+            instance = new Camera();
         }
         return instance;
     }
@@ -63,7 +63,7 @@ public class CameraComponent extends Component{
      * @return 
      */
     public String getRMRName() {
-        return "Camera Component";
+        return "Camera";
     }
     
     /**

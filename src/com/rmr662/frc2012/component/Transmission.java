@@ -12,11 +12,11 @@ import edu.wpi.first.wpilibj.Solenoid;
  *
  * @author RMR Programming
  */
-public class TransmissionComponent extends Component {
+public class Transmission extends Component {
 
     private boolean transmissionLow = true;
     private RMRSolenoidSystem solenoidSystem;
-    private static TransmissionComponent instance = null;
+    private static Transmission instance = null;
 
    /**
     * creates the instance for TransmissionComponent if none exists
@@ -24,9 +24,9 @@ public class TransmissionComponent extends Component {
     * @return 
     */
     
-    public static TransmissionComponent getInstance() {
+    public static Transmission getInstance() {
         if (instance == null) {
-            instance = new TransmissionComponent();
+            instance = new Transmission();
         }
         return instance;
     }
@@ -35,7 +35,7 @@ public class TransmissionComponent extends Component {
      * constructor
      */
     
-    private TransmissionComponent() {
+    private Transmission() {
         solenoidSystem = new RMRSolenoidSystem(new Solenoid(5), new Solenoid(6));
     }
 
@@ -82,6 +82,6 @@ public class TransmissionComponent extends Component {
     }
 
     public String getRMRName() {
-        return "Transmission Component";
+        return "Transmission";
     }
 }
