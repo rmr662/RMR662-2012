@@ -16,8 +16,8 @@ public class Camera extends Component{
     //private static final int PAN = 10;
     private static final int TILT = 5;
     
-    private static final double DEFAULT_PAN = 0d;
-    private static final double DEFAULT_TILT = 0d;
+   // private static final double DEFAULT_PAN = .5d;
+    private static final double DEFAULT_TILT = .5d;
 
     //private Servo servoPan;
     //private double currentPanState;

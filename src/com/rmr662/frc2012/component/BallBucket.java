@@ -7,7 +7,6 @@ package com.rmr662.frc2012.component;
 import com.rmr662.frc2012.generic.Component;
 import com.rmr662.frc2012.physical.RMRSolenoidSystem;
 import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
 /**
  *
@@ -89,7 +88,6 @@ public class BallBucket extends Component {
      */
     public synchronized void setElbowTarget(boolean down) {
         targetElbowValue = down;
-        NetworkTable.getTable("status").putBoolean("elbowDown", down);
     }
 //    /**
 //     * sets target values as down
