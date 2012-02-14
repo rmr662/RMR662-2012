@@ -9,7 +9,6 @@ import com.rmr662.frc2012.physical.RMREncoder;
 import com.rmr662.frc2012.physical.RMRJaguar;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PIDController;
-import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
 /**
  * This class represents the drive wheels of the robot and knows how to control
@@ -40,8 +39,7 @@ public class Drive extends Component {
      * Creates a new Drive component with motors and encoders on the default
      * channels
      */
-    private Drive() {
-        NetworkTable.getTable("status").putBoolean("pidEnabled", pidEnabled);
+    private Drive() {        
         for (int i = 0; i < MOTOR_CHANNELS.length; i++) {
             motors[i] = new RMRJaguar(MOTOR_CHANNELS[i]);
             motors[i].setInverted(true);
@@ -55,16 +53,23 @@ public class Drive extends Component {
             }
             controllers[i].setInputRange(-MAX_SPEED, MAX_SPEED);
         }
+        motors[RIGHT].setInverted(false);
         encoders[LEFT].setReverseDirection(true);
+        //encoders[RIGHT].setReverseDirection(true);
     }
 
     public void update() {
         tankDrive(targetValues[LEFT], targetValues[RIGHT]);
+      //  System.out.println("Left: " + encoders[LEFT].getRate() + " Target: " + targetValues[LEFT]
+       //         + "\n" + "Right: " + encoders[RIGHT].getRate() + " Target: " + targetValues[RIGHT]);
     }
 
     public void reset() {
         for (int i = 0; i < targetValues.length; i++) {
-            targetValues[i] = 0d;
+            targetValues[i] = 0d;            
+        }
+        for (int i = 0; i < encoders.length; i++) {
+            encoders[i].reset();
         }
     }
 
@@ -92,17 +97,19 @@ public class Drive extends Component {
     public void tankDrive(double leftValue, double rightValue) {
         leftValue = limit(leftValue);
         rightValue = limit(rightValue);
-        if (rightValue >= 0d) {
-            rightValue *= rightValue;
-        } else {
-            rightValue = -(rightValue * rightValue);
-        }
-        if (leftValue >= 0d) {
-            leftValue *= leftValue;
-        } else {
-            leftValue = -(leftValue * leftValue);
-        }
+
         if (pidEnabled) {
+            if (rightValue >= 0d) {
+                rightValue *= rightValue;
+            } else {
+                rightValue = -(rightValue * rightValue);
+            }
+            if (leftValue >= 0d) {
+                leftValue *= leftValue;
+            } else {
+                leftValue = -(leftValue * leftValue);
+            }
+
             controllers[LEFT].setSetpoint(leftValue);
             controllers[RIGHT].setSetpoint(rightValue);
         } else {
@@ -129,7 +136,7 @@ public class Drive extends Component {
      * @param d change in KD
      */
     public void setRelativePIDValues(double p, double i, double d) {
-        for (int j = 0; j < controllers.length; ++j) {
+        for (int j = 0; j < controllers.length; j++) {
             controllers[j].setPID(controllers[j].getP() + p, controllers[j].getI() + i, controllers[j].getD() + d);
         }
     }
@@ -141,13 +148,13 @@ public class Drive extends Component {
      */
     public void setPID(boolean enabled) {
         pidEnabled = enabled;
-        NetworkTable.getTable("status").putBoolean("pidEnabled", pidEnabled);
+        
         if (enabled) {
-            for (int i = 0; i < controllers.length; ++i) {
+            for (int i = 0; i < controllers.length; i++) {
                 controllers[i].enable();
             }
         } else {
-            for (int i = 0; i < controllers.length; ++i) {
+            for (int i = 0; i < controllers.length; i++) {
                 controllers[i].disable();
             }
         }
@@ -189,6 +196,10 @@ public class Drive extends Component {
      */
     public void disablePID() {
         setPID(false);
+    }
+    
+    public boolean isPIDEnabled(){
+        return pidEnabled;
     }
 
     public static Drive getInstance() {

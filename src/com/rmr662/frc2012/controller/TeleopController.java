@@ -6,6 +6,7 @@ package com.rmr662.frc2012.controller;
 
 import com.rmr662.frc2012.RMRRobot;
 import com.rmr662.frc2012.component.Drive;
+import com.rmr662.frc2012.component.NetworkComms;
 import com.rmr662.frc2012.controller.function.*;
 import com.rmr662.frc2012.generic.Controller;
 import com.rmr662.frc2012.generic.Function;
@@ -26,17 +27,23 @@ public class TeleopController implements Controller {
         for (int i = 0; i < joysticks.length; i++) {
             joysticks[i] = new Joystick(JOYSTICKS[i]);
         }
-        functions = new Function[5];
+        functions = new Function[4];
         functions[0] = new DriveFunction(joysticks);
         functions[1] = new DrivePIDTuningFunction(joysticks);
         functions[2] = new TransmissionFunction(joysticks[Drive.RIGHT]);
-        functions[3] = new CameraFunction(joysticks[2]);
-        functions[4] = new BalancingFunction(joysticks[2]);
+        functions[3] = new CameraFunction(joysticks[2]); //third joystick
+        //  functions[4] = new BalancingFunction(joysticks[2]);
     }
 
     public void run() {
         while (RMRRobot.robot.isOperatorControl() && !RMRRobot.robot.isDisabled()) {
             for (int i = 0; i < functions.length; i++) {
+                if (NetworkComms.getInstance().isEndGame() == functions[i].isEndGameFunction()) {
+                    functions[i].setEnabled(true);
+                }
+                else{
+                    functions[i].setEnabled(false);
+                }
                 functions[i].run();
             }
         }

@@ -26,6 +26,7 @@ public class BalancingFunction extends Function{
     public BalancingFunction (Joystick joystick){
         this.joystick = joystick;
         acceler = RMRAccelerometer.getInstance();
+        setEndGameFunction(true);
         //setEnabled(false); Need to disable and wait for endgame
     }
     

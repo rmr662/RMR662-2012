@@ -4,19 +4,14 @@
 /* must be accompanied by the FIRST BSD license file in the root directory of */
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
-
 package com.rmr662.frc2012;
 
-import com.rmr662.frc2012.component.Camera;
-import com.rmr662.frc2012.component.Drive;
-import com.rmr662.frc2012.component.RMRCompressor;
-import com.rmr662.frc2012.component.Transmission;
+import com.rmr662.frc2012.component.*;
 import com.rmr662.frc2012.controller.TeleopController;
 import com.rmr662.frc2012.generic.Component;
 import com.rmr662.frc2012.generic.Controller;
 import edu.wpi.first.wpilibj.SimpleRobot;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -26,18 +21,18 @@ import edu.wpi.first.wpilibj.networktables.NetworkTable;
  * directory.
  */
 public class RMRRobot extends SimpleRobot {
-    
+
     /**
-     * The update cycle for pushing updates to components (in millis)
+     * The update cycle for pushing updates to components (in millis) The
+     * delay() method expects seconds
      */
     public static final double PERIOD = 0.05;
-    
     private Component[] components;
+    private NetworkComms networkComms; //Seperate due to special behavior
     private Controller activeController;
     private Thread controllerThread;
-    
     public static RMRRobot robot;
-     
+
     /**
      * This function is called once each time the robot enters autonomous mode.
      */
@@ -54,56 +49,51 @@ public class RMRRobot extends SimpleRobot {
         controllerThread = new Thread(activeController);
         controllerThread.start();
         while (isEnabled()) {
-            try {
-                for(int i = 0; i < components.length; ++i) {
-                    components[i].setEnabled(NetworkTable.getTable("components").getBoolean(components[i].getRMRName()));
-                }
-            } catch (Exception e) {
-                for(int i = 0; i < components.length; ++i) {
-                    components[i].setEnabled(true);
-                }
-            }
             updateComponents();
+            //Update any NetworkTables, server and client side
+            networkComms.update();
             Timer.delay(PERIOD);
         }
     }
-    
+
     /**
      * This function is called exactly once when the robot is powered on.
      */
     protected void robotInit() {
-       robot = this;
-       components = new Component[4];
-       components[0] = Drive.getInstance();
-       components[1] = RMRCompressor.getInstance();
-       components[2] = Transmission.getInstance();
-       //components[2] = BallBucket.getInstance();
-       //components[3] = ShooterArm.getInstance();
-       //components[i] = ShooterTurret.getInstance();
-       components[3] = Camera.getInstance();
+        robot = this;
+        components = new Component[4];
+        components[0] = Drive.getInstance();
+        components[1] = RMRCompressor.getInstance();
+        components[2] = Transmission.getInstance();
+        //components[2] = BallBucket.getInstance();
+        //components[3] = ShooterArm.getInstance();
+        //components[i] = ShooterTurret.getInstance();
+        components[3] = Camera.getInstance();
+        networkComms = NetworkComms.getInstance(components);
     }
-    
+
     protected void disabled() {
         try {
-             for (int i = 0; i < components.length; i++) {
-                 components[i].reset();
-             }
+            for (int i = 0; i < components.length; i++) {
+                components[i].reset();
+            }
             controllerThread.join();
-        } catch(NullPointerException e) {
+        } catch (NullPointerException e) {
             System.out.println("No controller thread was running.");
-        } catch(InterruptedException e) {
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
         System.out.println("Disabled.");
     }
-    
+
     /**
      * This method is called to update all of the physical components
      */
     private void updateComponents() {
         for (int i = 0; i < components.length; i++) {
-            components[i].update();
+            if (components[i] != null) {
+                components[i].update();
+            }
         }
     }
-    
 }

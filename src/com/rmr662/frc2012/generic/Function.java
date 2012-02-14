@@ -11,6 +11,15 @@ package com.rmr662.frc2012.generic;
 public abstract class Function implements Runnable {
     
     private boolean enabled = true;
+    private boolean endGameFunction = false;
+    
+    public boolean isEndGameFunction(){
+        return endGameFunction;
+    }
+    
+    protected void setEndGameFunction(boolean endGame){
+        endGameFunction = endGame;
+    }
     
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;

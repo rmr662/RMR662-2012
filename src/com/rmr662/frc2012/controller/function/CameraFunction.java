@@ -23,6 +23,7 @@ public class CameraFunction extends Function {
     
     public CameraFunction(Joystick joystick) {
         this.joystick = joystick;
+        setEndGameFunction(true);
     }
     
     /**
@@ -38,14 +39,8 @@ public class CameraFunction extends Function {
      */
 
     protected void update() {
-        double y = joystick.getY() + 1;
-        y /= 2;
-
-        double x = joystick.getX() + 1;
-        x /= 2;
-
-        //CameraComponent.getInstance().setPanTargetState(x);
+        double y = (joystick.getY() + 1d)/2;
+        
         Camera.getInstance().setTiltTargetState(y);
-
     }
 }
