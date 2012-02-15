@@ -38,7 +38,7 @@ public class TeleopController implements Controller {
     public void run() {
         while (RMRRobot.robot.isOperatorControl() && !RMRRobot.robot.isDisabled()) {
             for (int i = 0; i < functions.length; i++) {
-                if (NetworkComms.getInstance().isEndGame() == functions[i].isEndGameFunction()) {
+                if (functions[i].isEndGameFunction() || !NetworkComms.getInstance().isEndGame()) {
                     functions[i].setEnabled(true);
                 }
                 else{
