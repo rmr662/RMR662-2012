@@ -61,7 +61,7 @@ public class RMRRobot extends SimpleRobot {
      */
     protected void robotInit() {
         robot = this;
-        components = new Component[4];
+        components = new Component[6];
         components[0] = Drive.getInstance();
         components[1] = RMRCompressor.getInstance();
         components[2] = Transmission.getInstance();
@@ -69,6 +69,8 @@ public class RMRRobot extends SimpleRobot {
         //components[3] = ShooterArm.getInstance();
         //components[i] = ShooterTurret.getInstance();
         components[3] = Camera.getInstance();
+        components[4] = Turret.getInstance();
+        components[5] = ShooterArm.getInstance();
         networkComms = NetworkComms.getInstance(components);
     }
 

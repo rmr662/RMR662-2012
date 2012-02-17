@@ -15,9 +15,9 @@ import edu.wpi.first.wpilibj.networktables.NetworkTableKeyNotDefined;
 public class NetworkComms extends Component {
 
     private Component[] components;
-    private int UPDATE_PERIOD = 100;
+    private int UPDATE_PERIOD = 0;
     private int counter = 0;
-    private boolean enabled = true;
+    private boolean enabled = false;
     private boolean endGame = false;
     private static NetworkComms instance = null;
     
@@ -37,7 +37,7 @@ public class NetworkComms extends Component {
     }
 
     public void update() {
-        if (counter == UPDATE_PERIOD && enabled) {
+        if (counter >= UPDATE_PERIOD && enabled) {
             NetworkTable.getTable("status").putBoolean("pidEnabled", Drive.getInstance().isPIDEnabled());
             NetworkTable.getTable("status").putBoolean("transmissionLow", Transmission.getInstance().isTranmissionLow());
             try {

@@ -29,9 +29,11 @@ public class TeleopController implements Controller {
         }
         functions = new Function[4];
         functions[0] = new DriveFunction(joysticks);
-        functions[1] = new DrivePIDTuningFunction(joysticks);
-        functions[2] = new TransmissionFunction(joysticks[Drive.RIGHT]);
-        functions[3] = new CameraFunction(joysticks[2]); //third joystick
+       // functions[1] = new DrivePIDTuningFunction(joysticks);
+        functions[1] = new TransmissionFunction(joysticks[Drive.RIGHT]);
+        //functions[3] = new CameraFunction(joysticks[2]); //third joystick
+        functions[2] = new TurretFunction(joysticks[2]); 
+        functions[3] = new BallShooterFunction(joysticks[2]);
         //  functions[4] = new BalancingFunction(joysticks[2]);
     }
 

@@ -9,6 +9,7 @@ import com.rmr662.frc2012.physical.RMREncoder;
 import com.rmr662.frc2012.physical.RMRJaguar;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.RobotDrive;
 
 /**
  * This class represents the drive wheels of the robot and knows how to control
@@ -22,7 +23,8 @@ public class Drive extends Component {
     public static final int LEFT = 0;
     public static final int RIGHT = 1;
     private static final double DISTANCE_PER_PULSE = 0.001198473; //0.001198473 0.000465839
-    private boolean pidEnabled = true;
+    private boolean pidEnabled = false;
+    public static boolean tankDrive = false;
     private static final double[] KP = {0.05, 0.05};
     private static final double[] KI = {0.0, 0.0};
     private static final double[] KD = {0.0, 0.0};
@@ -39,7 +41,7 @@ public class Drive extends Component {
      * Creates a new Drive component with motors and encoders on the default
      * channels
      */
-    private Drive() {        
+    private Drive() {
         for (int i = 0; i < MOTOR_CHANNELS.length; i++) {
             motors[i] = new RMRJaguar(MOTOR_CHANNELS[i]);
             motors[i].setInverted(true);
@@ -59,14 +61,18 @@ public class Drive extends Component {
     }
 
     public void update() {
-        tankDrive(targetValues[LEFT], targetValues[RIGHT]);
-      //  System.out.println("Left: " + encoders[LEFT].getRate() + " Target: " + targetValues[LEFT]
-       //         + "\n" + "Right: " + encoders[RIGHT].getRate() + " Target: " + targetValues[RIGHT]);
+        if (tankDrive) {
+            tankDrive(targetValues[LEFT], targetValues[RIGHT]);
+        } else {
+            arcadeDrive(targetValues[LEFT], targetValues[RIGHT]);
+        }
+        //  System.out.println("Left: " + encoders[LEFT].getRate() + " Target: " + targetValues[LEFT]
+        //         + "\n" + "Right: " + encoders[RIGHT].getRate() + " Target: " + targetValues[RIGHT]);
     }
 
     public void reset() {
         for (int i = 0; i < targetValues.length; i++) {
-            targetValues[i] = 0d;            
+            targetValues[i] = 0d;
         }
         for (int i = 0; i < encoders.length; i++) {
             encoders[i].reset();
@@ -86,6 +92,49 @@ public class Drive extends Component {
 
     public boolean isMoving() {
         return (Math.abs(encoders[LEFT].getRate()) > .1 && Math.abs(encoders[RIGHT].getRate()) > .1);
+    }
+
+    public void arcadeDrive(double moveValue, double rotateValue) {
+        // local variables to hold the computed PWM values for the motors
+        double leftMotorSpeed;
+        double rightMotorSpeed;
+
+        moveValue = limit(moveValue);
+        rotateValue = limit(rotateValue);
+
+        // square the inputs (while preserving the sign) to increase fine control while permitting full power
+        if (moveValue >= 0.0) {
+            moveValue = (moveValue * moveValue);
+        } else {
+            moveValue = -(moveValue * moveValue);
+        }
+        if (rotateValue >= 0.0) {
+            rotateValue = (rotateValue * rotateValue);
+        } else {
+            rotateValue = -(rotateValue * rotateValue);
+        }
+
+        if (moveValue > 0.0) {
+            if (rotateValue > 0.0) {
+                leftMotorSpeed = moveValue - rotateValue;
+                rightMotorSpeed = Math.max(moveValue, rotateValue);
+            } else {
+                leftMotorSpeed = Math.max(moveValue, -rotateValue);
+                rightMotorSpeed = moveValue + rotateValue;
+            }
+        } else {
+            if (rotateValue > 0.0) {
+                leftMotorSpeed = -Math.max(-moveValue, rotateValue);
+                rightMotorSpeed = moveValue + rotateValue;
+            } else {
+                leftMotorSpeed = moveValue - rotateValue;
+                rightMotorSpeed = -Math.max(-moveValue, -rotateValue);
+            }
+        }
+
+        motors[LEFT].set(leftMotorSpeed);
+        motors[RIGHT].set(rightMotorSpeed);
+
     }
 
     /**
@@ -148,7 +197,7 @@ public class Drive extends Component {
      */
     public void setPID(boolean enabled) {
         pidEnabled = enabled;
-        
+
         if (enabled) {
             for (int i = 0; i < controllers.length; i++) {
                 controllers[i].enable();
@@ -197,8 +246,8 @@ public class Drive extends Component {
     public void disablePID() {
         setPID(false);
     }
-    
-    public boolean isPIDEnabled(){
+
+    public boolean isPIDEnabled() {
         return pidEnabled;
     }
 

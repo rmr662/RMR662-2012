@@ -7,7 +7,6 @@ package com.rmr662.frc2012.component;
 import com.rmr662.frc2012.generic.Component;
 import com.rmr662.frc2012.physical.RMRJaguar;
 import com.rmr662.frc2012.physical.RMRLimitSwitch;
-import edu.wpi.first.wpilibj.DigitalInput;
 
 /**
  *
@@ -38,14 +37,19 @@ public class Turret extends Component {
         synchronized(this) {
             localTargetSpeed = targetSpeed;
         }
-        // Asuming left is negative and right is positive
-        if (localTargetSpeed < 0 && !limitSwitchLeft.get()) {
-            motor.set(localTargetSpeed);
-        } else if (localTargetSpeed > 0 && !limitSwitchRight.get()) {
-            motor.set(localTargetSpeed);
-        } else {
-            motor.set(0d);
-        }
+        motor.set(localTargetSpeed);
+//        System.out.println("Target: "+localTargetSpeed);
+//        // Asuming left is negative and right is positive
+//        if (localTargetSpeed < 0 && !limitSwitchLeft.get()) {
+//            System.out.println("1");
+//            motor.set(localTargetSpeed);
+//        } else if (localTargetSpeed > 0 && !limitSwitchRight.get()) {
+//            System.out.println("2");
+//            motor.set(localTargetSpeed);
+//        } else {
+//            System.out.println("3");
+//            motor.set(0d);
+//        }
     }
 
     public synchronized void setTarget(double target) {

@@ -13,31 +13,34 @@ import edu.wpi.first.wpilibj.Joystick;
  * @author RMR Programming
  */
 public class DriveFunction extends Function {
-    
+
     private Joystick[] joysticks;
-    
+
     /**
      * constructor
-     * @param joysticks 
+     *
+     * @param joysticks
      */
-    
     public DriveFunction(Joystick[] joysticks) {
         this.joysticks = joysticks;
     }
-    
+
     /**
      * sets target values for the drive instance and the joystick
      */
-    
     protected void update() {
-        Drive.getInstance().setTargetValues(-joysticks[Drive.LEFT].getY(),
-                -joysticks[Drive.RIGHT].getY());
+        if (Drive.tankDrive) {
+            Drive.getInstance().setTargetValues(-joysticks[Drive.LEFT].getY(),
+                    -joysticks[Drive.RIGHT].getY());
+        } else {
+            Drive.getInstance().setTargetValues(-joysticks[Drive.LEFT].getY(),
+                    -joysticks[Drive.LEFT].getX());
+        }
     }
-    
+
     /**
      * resets the target values for the instance to their default state
      */
-    
     protected void defaultState() {
         Drive.getInstance().reset();
     }

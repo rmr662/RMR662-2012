@@ -19,7 +19,7 @@ public class ShooterArm extends Component {
     //TODO: put in motor channel, switch channel, and motor speed
     private static int MOTOR_CHANNEL = 3;
     private static int SWITCH_CHANNEL = 4;
-    private static double MOTOR_SPEED;
+    private static double MOTOR_SPEED = .25d;
     private static boolean MOTOR_INVERTED = false;
     private RMRJaguar motor;
     private RMRLimitSwitch limitSwitch;
@@ -42,15 +42,22 @@ public class ShooterArm extends Component {
         synchronized (this) {
             localShootingTarget = shootingTarget;
         }
-        if (!BallLoader.getInstance().isReadyToFire()) {
-            localShootingTarget = false;
+        if(localShootingTarget){
+             motor.set(MOTOR_SPEED);
         }
-        if (limitSwitch.get() && !localShootingTarget) {
+        else{
             motor.set(0d);
             motor.stopMotor();
-        } else {
-            motor.set(MOTOR_SPEED);
         }
+//        if (!BallLoader.getInstance().isReadyToFire()) {
+//            localShootingTarget = false;
+//        }
+//        if (limitSwitch.get() && !localShootingTarget) {
+//            motor.set(0d);
+//            motor.stopMotor();
+//        } else {
+//            motor.set(MOTOR_SPEED);
+//        }
     }
 
     /*
@@ -81,7 +88,6 @@ public class ShooterArm extends Component {
      */
     public synchronized void setShooting(boolean shootingTarget) {
         this.shootingTarget = shootingTarget;
-        NetworkTable.getTable("status").putBoolean("shootingTarget", shootingTarget);
     }
     
     public synchronized boolean isShooting() {
