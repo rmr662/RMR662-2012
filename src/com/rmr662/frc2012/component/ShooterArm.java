@@ -7,6 +7,8 @@ package com.rmr662.frc2012.component;
 import com.rmr662.frc2012.generic.Component;
 import com.rmr662.frc2012.physical.RMRJaguar;
 import com.rmr662.frc2012.physical.RMRLimitSwitch;
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
 /**
@@ -19,11 +21,13 @@ public class ShooterArm extends Component {
     //TODO: put in motor channel, switch channel, and motor speed
     private static int MOTOR_CHANNEL = 3;
     private static int SWITCH_CHANNEL = 4;
-    private static double MOTOR_SPEED = .25d;
+    private static double MOTOR_SPEED = 1d;
     private static boolean MOTOR_INVERTED = false;
     private RMRJaguar motor;
     private RMRLimitSwitch limitSwitch;
     private boolean shootingTarget = false;
+    private DigitalInput autoSwitch = new DigitalInput(13);
+    private boolean inverted = false;
 
     /**
      * sets limitSwitch as a digital input
@@ -42,12 +46,20 @@ public class ShooterArm extends Component {
         synchronized (this) {
             localShootingTarget = shootingTarget;
         }
-        if(localShootingTarget){
-             motor.set(MOTOR_SPEED);
-        }
-        else{
+        // System.out.println("Auto: "+autoSwitch.get() +"\t"+"Trigger: "+localShootingTarget);        
+        if (BallLoader.getInstance().isReadyToFire()) {
+            if (localShootingTarget) {
+                if (!inverted) {
+                    motor.set(MOTOR_SPEED);
+                } else {
+                    motor.set(-MOTOR_SPEED);
+                }
+            } else {
+                motor.set(0d);
+                motor.stopMotor();
+            }
+        } else {
             motor.set(0d);
-            motor.stopMotor();
         }
 //        if (!BallLoader.getInstance().isReadyToFire()) {
 //            localShootingTarget = false;
@@ -67,13 +79,15 @@ public class ShooterArm extends Component {
         synchronized (this) {
             shootingTarget = false;
         }
+        motor.set(0d);
     }
 
     public String getRMRName() {
         return "Shooter Arm";
     }
 
-    /*S
+    /*
+     * S
      * creates new instance ShooterArm
      */
     public static ShooterArm getInstance() {
@@ -89,7 +103,11 @@ public class ShooterArm extends Component {
     public synchronized void setShooting(boolean shootingTarget) {
         this.shootingTarget = shootingTarget;
     }
-    
+
+    public void setInverted(boolean inverted) {
+        this.inverted = inverted;
+    }
+
     public synchronized boolean isShooting() {
         return shootingTarget;
     }

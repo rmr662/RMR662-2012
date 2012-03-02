@@ -6,6 +6,7 @@ package com.rmr662.frc2012.component;
 
 import com.rmr662.frc2012.generic.Component;
 import com.rmr662.frc2012.physical.RMRLimitSwitch;
+import com.rmr662.frc2012.physical.RMRSolenoidSystem;
 import edu.wpi.first.wpilibj.Solenoid;
 
 /**
@@ -15,10 +16,12 @@ import edu.wpi.first.wpilibj.Solenoid;
 public class BallLoader extends Component {
     
     private static final int READY_SWITCH_CHANNEL = 5; // TODO
-    private static final int SOLENOID_CHANNEL = 7; // TODO
+    private static final int SOLENOID_CHANNEL1 = 3;
+    private static final int SOLENOID_CHANNEL2 = 4;
+    private static RMRSolenoidSystem solenoidSystem;
     
     private RMRLimitSwitch readySwitch;
-    private Solenoid solenoid;
+    
     
     private boolean targetState = false; // true is up
     
@@ -26,7 +29,7 @@ public class BallLoader extends Component {
     
     public BallLoader() {
         readySwitch = new RMRLimitSwitch(READY_SWITCH_CHANNEL, false);
-        solenoid = new Solenoid(SOLENOID_CHANNEL);
+        solenoidSystem = new RMRSolenoidSystem(new Solenoid(SOLENOID_CHANNEL1), new Solenoid(SOLENOID_CHANNEL2));
     }
     
     public void update() {
@@ -35,12 +38,12 @@ public class BallLoader extends Component {
             localTargetState = targetState;
         }
         if (!ShooterArm.getInstance().isShooting()) {
-            solenoid.set(localTargetState);
+            solenoidSystem.set(localTargetState);
         }
     }
     
     public synchronized void reset() {
-        targetState = true;
+        targetState = false;
     }
     
     public String getRMRName() {
@@ -48,11 +51,11 @@ public class BallLoader extends Component {
     }
     
     public boolean isReadyToFire() {
-        return readySwitch.get();
+        return !readySwitch.get();
     }
     
-    public synchronized void setTargetState(boolean up) {
-        this.targetState = up;
+    public synchronized void setTargetState(boolean down) {
+        this.targetState = down;
     }
     
     public static BallLoader getInstance() {

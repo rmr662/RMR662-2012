@@ -24,8 +24,9 @@ public class Turret extends Component {
     private RMRLimitSwitch limitSwitchRight;
     private RMRLimitSwitch limitSwitchCenter;
     private double targetSpeed = 0.0;
+    private boolean stopAtCenter = false;
 
-    public Turret() {
+    private Turret() {
         motor = new RMRJaguar(MOTOR_CHANNEL);
         limitSwitchLeft = new RMRLimitSwitch(SWITCH_CHANNEL_LEFT, false);
         limitSwitchRight = new RMRLimitSwitch(SWITCH_CHANNEL_RIGHT, false);
@@ -34,22 +35,27 @@ public class Turret extends Component {
 
     public void update() {
         double localTargetSpeed = 0d;
-        synchronized(this) {
+        synchronized (this) {
             localTargetSpeed = targetSpeed;
         }
-        motor.set(localTargetSpeed);
-//        System.out.println("Target: "+localTargetSpeed);
-//        // Asuming left is negative and right is positive
-//        if (localTargetSpeed < 0 && !limitSwitchLeft.get()) {
-//            System.out.println("1");
-//            motor.set(localTargetSpeed);
-//        } else if (localTargetSpeed > 0 && !limitSwitchRight.get()) {
-//            System.out.println("2");
-//            motor.set(localTargetSpeed);
-//        } else {
-//            System.out.println("3");
-//            motor.set(0d);
-//        }
+        if (!(stopAtCenter && !limitSwitchCenter.get())) {
+            if (localTargetSpeed < 0 && limitSwitchLeft.get()) {
+                //   System.out.println("1 " + localTargetSpeed);
+                motor.set(localTargetSpeed);
+            } else if (localTargetSpeed > 0 && limitSwitchRight.get()) {
+                // System.out.println("2" + localTargetSpeed);
+                motor.set(localTargetSpeed);
+            } else {
+                //System.out.println("3" + localTargetSpeed);
+                motor.set(0d);
+            }
+        } else {
+            motor.set(0d);
+        }
+    }
+
+    public void setStopAtCenter(boolean stopAtCenter) {
+        this.stopAtCenter = stopAtCenter;
     }
 
     public synchronized void setTarget(double target) {
@@ -63,7 +69,7 @@ public class Turret extends Component {
     public String getRMRName() {
         return "Turret Platform";
     }
-    
+
     public boolean isCentered() {
         return limitSwitchCenter.get();
     }
@@ -74,5 +80,4 @@ public class Turret extends Component {
         }
         return instance;
     }
-    
 }

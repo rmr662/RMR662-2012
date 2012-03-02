@@ -98,5 +98,7 @@ public class Camera extends Component{
      */
     public synchronized void setTiltTargetState(double goalTiltState){
         targetTiltState = goalTiltState;
+       // System.out.println("Camera: "+targetTiltState);
+        targetTiltState = Math.min(targetTiltState, 0.8d);
     }
 }

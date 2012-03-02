@@ -15,6 +15,7 @@ public class RMRJaguar extends Jaguar {
     
     private boolean inverted = false;
     private double lastOutput = 0;
+    private boolean ratePID = true;
     
     public RMRJaguar(int channel) {
         super(channel);
@@ -28,17 +29,31 @@ public class RMRJaguar extends Jaguar {
         this.inverted = inverted;
     }
     
+    public void setRatePID(boolean ratePID) {
+        this.ratePID = ratePID;
+    }
+    
     public void pidWrite(double output) {
         lastOutput += output;
-        super.pidWrite(lastOutput);
+        if (ratePID) {
+            super.pidWrite(lastOutput);
+        } else {
+            super.pidWrite(output);
+        }
     }
     
     public void set(double speed) {
         super.set(inverted?(-speed):speed);
     }
     
-    public void set(double speed, byte syncGroup) {
-        super.set(inverted?(-speed):speed, syncGroup);
+    public void reset(){
+        super.set(0d);
+        super.stopMotor();
+        lastOutput = 0;
     }
+    
+//    public void set(double speed, byte syncGroup) {
+//        super.set(inverted?(-speed):speed, syncGroup);
+//    }
     
 }

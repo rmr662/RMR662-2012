@@ -27,15 +27,9 @@ public class TransmissionFunction extends Function {
     }
 
     protected void update() {
-        if (joystick.getRawButton(2)) {
-            currentState = true;
-            if (!lastState && currentState) {
-
-                Transmission.getInstance().toggleTransmission();
-
-            }
-        } else {
-            currentState = false;
+        currentState = joystick.getRawButton(2);
+        if (lastState && !currentState) {
+            Transmission.getInstance().toggleTransmission();
         }
         lastState = currentState;
     }

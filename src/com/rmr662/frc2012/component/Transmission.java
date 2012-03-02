@@ -73,7 +73,8 @@ public class Transmission extends Component {
      */
 
     public void update() {
-        if (Drive.getInstance().isMoving()) {
+        //if (Drive.getInstance().isMoving()) 
+        {
             solenoidSystem.set(transmissionLow);
         }
     }

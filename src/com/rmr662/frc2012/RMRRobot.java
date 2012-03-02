@@ -7,9 +7,12 @@
 package com.rmr662.frc2012;
 
 import com.rmr662.frc2012.component.*;
+import com.rmr662.frc2012.controller.AutonomousController;
 import com.rmr662.frc2012.controller.TeleopController;
 import com.rmr662.frc2012.generic.Component;
 import com.rmr662.frc2012.generic.Controller;
+import edu.wpi.first.wpilibj.DriverStationLCD;
+import edu.wpi.first.wpilibj.DriverStationLCD.Line;
 import edu.wpi.first.wpilibj.SimpleRobot;
 import edu.wpi.first.wpilibj.Timer;
 
@@ -39,18 +42,49 @@ public class RMRRobot extends SimpleRobot {
     public void autonomous() {
         // TODO: initialize activeController and start a thread for it.
         // updateComponents();
+        activeController = AutonomousController.getInstance();
+        if (controllerThread != null) {
+            controllerThread.interrupt();
+        }
+        controllerThread = new Thread(activeController);
+        controllerThread.start();
+        while(isEnabled() && isAutonomous()) {
+            DriverStationLCD.getInstance().println(Line.kUser2, 0, "Autonomous Loop");
+            DriverStationLCD.getInstance().updateLCD();
+            updateComponents();
+            Timer.delay(PERIOD);
+        }
+        controllerThread.interrupt();
+        try {
+            controllerThread.join();
+        } catch (InterruptedException ex) {
+            ex.printStackTrace();
+        }
     }
 
     /**
      * This function is called once each time the robot enters operator control.
      */
     public void operatorControl() {
+//        System.out.println("PID status: " + Drive.getInstance().isPIDEnabled());
+//        try {
+//              System.out.println("Start Sleep");
+//              Thread.sleep(3000);
+//              System.out.println("Stop Sleep");
+//        } catch (InterruptedException ex) {
+//            ex.printStackTrace();
+//        }
         activeController = TeleopController.getInstance();
+        if (controllerThread != null) {
+            controllerThread.interrupt();
+        }
         controllerThread = new Thread(activeController);
         controllerThread.start();
-        while (isEnabled()) {
+
+//        Drive.getInstance().enablePID(); // temp
+
+        while (isEnabled() && isOperatorControl()) {
             updateComponents();
-            //Update any NetworkTables, server and client side
             networkComms.update();
             Timer.delay(PERIOD);
         }
@@ -61,31 +95,35 @@ public class RMRRobot extends SimpleRobot {
      */
     protected void robotInit() {
         robot = this;
-        components = new Component[6];
+        components = new Component[8];
         components[0] = Drive.getInstance();
         components[1] = RMRCompressor.getInstance();
         components[2] = Transmission.getInstance();
-        //components[2] = BallBucket.getInstance();
-        //components[3] = ShooterArm.getInstance();
-        //components[i] = ShooterTurret.getInstance();
-        components[3] = Camera.getInstance();
-        components[4] = Turret.getInstance();
-        components[5] = ShooterArm.getInstance();
+        components[3] = BallBucket.getInstance();
+        components[4] = ShooterArm.getInstance();
+        components[5] = Camera.getInstance();
+        components[6] = Turret.getInstance();
+        components[7] = BallLoader.getInstance();
         networkComms = NetworkComms.getInstance(components);
+        // PCR : Initialize variables
+        controllerThread = null;
+        
     }
 
     protected void disabled() {
         try {
-            for (int i = 0; i < components.length; i++) {
-                components[i].reset();
-            }
             controllerThread.join();
         } catch (NullPointerException e) {
             System.out.println("No controller thread was running.");
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        System.out.println("Disabled.");
+        for (int i = 0; i < components.length; i++) {
+            if (components[i] != null) {
+                components[i].reset();
+            }
+        }
+
     }
 
     /**

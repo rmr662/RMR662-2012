@@ -20,31 +20,14 @@ public class PickupFunction extends Function {
 
     public PickupFunction(Joystick joystick) {
         this.joystick = joystick;
-        for (int i = 0; i < isPressed.length; ++i) {
-            isPressed[i] = false;
-        }
     }
 
     protected void update() {
-        for (int i = 0; i < isPressed.length; ++i) {
-            if (joystick.getRawButton(i + 1) && !isPressed[i]) {
-                switch (i + 1) {
-                    case 1:
-                        if (Turret.getInstance().isCentered()) {
-                            BallBucket.getInstance().setElbowTarget(true);
-                        }
-                        break;
-                    case 2:
-                        BallBucket.getInstance().setElbowTarget(false);
-                        break;
-                }
-                isPressed[i] = joystick.getRawButton(i + 1);
-            }
-        }
+        BallBucket.getInstance().setElbowTarget(joystick.getRawButton(2) && !Turret.getInstance().isCentered());
+        //      BallBucket.getInstance().setElbowTarget(joystick.getRawButton(2));
     }
 
     protected void defaultState() {
         BallBucket.getInstance().reset();
     }
-
 }

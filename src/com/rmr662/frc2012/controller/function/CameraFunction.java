@@ -23,7 +23,6 @@ public class CameraFunction extends Function {
     
     public CameraFunction(Joystick joystick) {
         this.joystick = joystick;
-        setEndGameFunction(true);
     }
     
     /**

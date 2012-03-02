@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.Joystick;
 public class DriveFunction extends Function {
 
     private Joystick[] joysticks;
+    private static boolean overridden = false;
 
     /**
      * constructor
@@ -29,12 +30,14 @@ public class DriveFunction extends Function {
      * sets target values for the drive instance and the joystick
      */
     protected void update() {
-        if (Drive.tankDrive) {
-            Drive.getInstance().setTargetValues(-joysticks[Drive.LEFT].getY(),
-                    -joysticks[Drive.RIGHT].getY());
-        } else {
-            Drive.getInstance().setTargetValues(-joysticks[Drive.LEFT].getY(),
-                    -joysticks[Drive.LEFT].getX());
+        if (!overridden) {
+            if (Drive.tankDrive) {
+                Drive.getInstance().setTargetValues(-joysticks[Drive.LEFT].getY(),
+                        -joysticks[Drive.RIGHT].getY());
+            } else {
+                Drive.getInstance().setArcadeTargets(-joysticks[Drive.LEFT].getY(),
+                        -joysticks[Drive.LEFT].getX());
+            }
         }
     }
 
@@ -43,5 +46,9 @@ public class DriveFunction extends Function {
      */
     protected void defaultState() {
         Drive.getInstance().reset();
+    }
+
+    public static void setOverride(boolean en) {
+        overridden = en;
     }
 }

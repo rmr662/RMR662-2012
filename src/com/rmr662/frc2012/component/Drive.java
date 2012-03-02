@@ -9,7 +9,6 @@ import com.rmr662.frc2012.physical.RMREncoder;
 import com.rmr662.frc2012.physical.RMRJaguar;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PIDController;
-import edu.wpi.first.wpilibj.RobotDrive;
 
 /**
  * This class represents the drive wheels of the robot and knows how to control
@@ -24,7 +23,7 @@ public class Drive extends Component {
     public static final int RIGHT = 1;
     private static final double DISTANCE_PER_PULSE = 0.001198473; //0.001198473 0.000465839
     private boolean pidEnabled = false;
-    public static boolean tankDrive = false;
+    public static boolean tankDrive = true;
     private static final double[] KP = {0.05, 0.05};
     private static final double[] KI = {0.0, 0.0};
     private static final double[] KD = {0.0, 0.0};
@@ -32,10 +31,11 @@ public class Drive extends Component {
     private static final int[] MOTOR_CHANNELS = {1, 2};
     private static final int[] ENCODER_CHANNELS_A = {6, 8};
     private static final int[] ENCODER_CHANNELS_B = {7, 9};
-    private RMRJaguar[] motors = new RMRJaguar[MOTOR_CHANNELS.length];
-    private RMREncoder[] encoders = new RMREncoder[ENCODER_CHANNELS_A.length];
-    private PIDController[] controllers = new PIDController[MOTOR_CHANNELS.length];
-    private double[] targetValues = {0d, 0d};
+    
+    private volatile RMRJaguar[] motors = new RMRJaguar[MOTOR_CHANNELS.length];
+    private volatile RMREncoder[] encoders = new RMREncoder[ENCODER_CHANNELS_A.length];
+    private volatile PIDController[] controllers = new PIDController[MOTOR_CHANNELS.length];
+    private volatile double[] targetValues = {0d, 0d};
 
     /**
      * Creates a new Drive component with motors and encoders on the default
@@ -57,25 +57,33 @@ public class Drive extends Component {
         }
         motors[RIGHT].setInverted(false);
         encoders[LEFT].setReverseDirection(true);
-        //encoders[RIGHT].setReverseDirection(true);
+//        encoders[RIGHT].setReverseDirection(true);
     }
 
     public void update() {
-        if (tankDrive) {
-            tankDrive(targetValues[LEFT], targetValues[RIGHT]);
-        } else {
-            arcadeDrive(targetValues[LEFT], targetValues[RIGHT]);
-        }
-        //  System.out.println("Left: " + encoders[LEFT].getRate() + " Target: " + targetValues[LEFT]
-        //         + "\n" + "Right: " + encoders[RIGHT].getRate() + " Target: " + targetValues[RIGHT]);
+//        System.out.println("Error: " + controllers[LEFT].onTarget() + "\t" + controllers[RIGHT].onTarget() + "\tTolerance: " + controllers[LEFT].getError());
+//       System.out.println("Targets: " + targetValues[LEFT] + ", " + targetValues[RIGHT]);
+        tankDrive(targetValues[LEFT], targetValues[RIGHT]);
+//       System.out.println("Rates: " + encoders[LEFT].getRate() + ", " + encoders[RIGHT].getRate());
+//       System.out.println("Setpoints: " + controllers[LEFT].getSetpoint() + ", " + controllers[RIGHT].getSetpoint());
     }
 
     public void reset() {
+        disablePID();
         for (int i = 0; i < targetValues.length; i++) {
             targetValues[i] = 0d;
-        }
-        for (int i = 0; i < encoders.length; i++) {
+            controllers[i].disable();
+            controllers[i].setSetpoint(0d);
+            motors[i].reset();
             encoders[i].reset();
+            encoders[i].resetRate();
+            controllers[i].reset();
+            if (pidEnabled) {
+                controllers[i].enable();
+            }
+        }
+        if(pidEnabled){
+            enablePID();
         }
     }
 
@@ -94,7 +102,7 @@ public class Drive extends Component {
         return (Math.abs(encoders[LEFT].getRate()) > .1 && Math.abs(encoders[RIGHT].getRate()) > .1);
     }
 
-    public void arcadeDrive(double moveValue, double rotateValue) {
+    public void setArcadeTargets(double moveValue, double rotateValue) {
         // local variables to hold the computed PWM values for the motors
         double leftMotorSpeed;
         double rightMotorSpeed;
@@ -132,8 +140,8 @@ public class Drive extends Component {
             }
         }
 
-        motors[LEFT].set(leftMotorSpeed);
-        motors[RIGHT].set(rightMotorSpeed);
+        targetValues[LEFT] = (leftMotorSpeed);
+        targetValues[RIGHT] = (rightMotorSpeed);
 
     }
 
@@ -147,23 +155,28 @@ public class Drive extends Component {
         leftValue = limit(leftValue);
         rightValue = limit(rightValue);
 
-        if (pidEnabled) {
-            if (rightValue >= 0d) {
-                rightValue *= rightValue;
-            } else {
-                rightValue = -(rightValue * rightValue);
-            }
-            if (leftValue >= 0d) {
-                leftValue *= leftValue;
-            } else {
-                leftValue = -(leftValue * leftValue);
-            }
+        if (rightValue >= 0d) {
+            rightValue *= rightValue;
+        } else {
+            rightValue = -(rightValue * rightValue);
+        }
+        if (leftValue >= 0d) {
+            leftValue *= leftValue;
+        } else {
+            leftValue = -(leftValue * leftValue);
+        }
 
+        if (pidEnabled) {
             controllers[LEFT].setSetpoint(leftValue);
             controllers[RIGHT].setSetpoint(rightValue);
+            //controllers[LEFT].setSetpoint(.5d);
+            //controllers[RIGHT].setSetpoint(.5d);
         } else {
+            //System.out.println("Left: " + leftValue + "\t" + "Right: " + rightValue);
             motors[LEFT].set(leftValue);
             motors[RIGHT].set(rightValue);
+            //motors[LEFT].set(.5);
+            //motors[RIGHT].set(.5);
         }
     }
 
@@ -190,6 +203,21 @@ public class Drive extends Component {
         }
     }
 
+    public void setPIDSource(boolean distance) {
+        for (int i = 0; i < motors.length; i++) {
+            motors[i].setRatePID(!distance);
+        }
+        if (distance) {
+            for (int i = 0; i < controllers.length; i++) {
+                encoders[i].setPIDSourceParameter(Encoder.PIDSourceParameter.kDistance);
+            }
+        } else {
+            for (int i = 0; i < controllers.length; i++) {
+                encoders[i].setPIDSourceParameter(Encoder.PIDSourceParameter.kRate);
+            }
+        }
+    }
+
     /**
      * Enables or disables the PID
      *
@@ -201,12 +229,19 @@ public class Drive extends Component {
         if (enabled) {
             for (int i = 0; i < controllers.length; i++) {
                 controllers[i].enable();
+                targetValues[i] = 0d;
             }
         } else {
             for (int i = 0; i < controllers.length; i++) {
-                controllers[i].disable();
+                controllers[i].reset();
+                targetValues[i] = 0d;
             }
         }
+    }
+    
+    public boolean isPIDEnabled()
+    {
+        return (pidEnabled || controllers[LEFT].isEnable() || controllers[RIGHT].isEnable());
     }
 
     /**
@@ -247,9 +282,6 @@ public class Drive extends Component {
         setPID(false);
     }
 
-    public boolean isPIDEnabled() {
-        return pidEnabled;
-    }
 
     public static Drive getInstance() {
         if (instance == null) {

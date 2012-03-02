@@ -25,6 +25,7 @@ public class TurretFunction extends Function{
     }
 
     protected void update() {
+        Turret.getInstance().setStopAtCenter(joystick.getRawButton(4) || joystick.getRawButton(5));
         Turret.getInstance().setTarget(joystick.getX()/2);        
     }
     
