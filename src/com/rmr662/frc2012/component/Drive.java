@@ -55,7 +55,7 @@ public class Drive extends Component {
             }
             controllers[i].setInputRange(-MAX_SPEED, MAX_SPEED);
         }
-        motors[RIGHT].setInverted(false);
+        motors[RIGHT].setInverted(true);
         encoders[LEFT].setReverseDirection(true);
 //        encoders[RIGHT].setReverseDirection(true);
     }

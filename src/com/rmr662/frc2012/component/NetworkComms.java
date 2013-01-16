@@ -64,7 +64,6 @@ public class NetworkComms extends Component {
     }
 
     public void reset() {
-        NetworkTable.initialize();
     }
 
     public String getRMRName() {
